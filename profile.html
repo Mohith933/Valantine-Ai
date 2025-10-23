@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valatine Ai - Profile</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    body {
+      background: #8b1c41;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: white;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .navbar span {
+      color: #fff;
+    }
+
+    /* Profile Card */
+    .profile-box {
+      background: linear-gradient(135deg, #c1275b, #8b1c41);
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
+      width: 420px;
+      text-align: center;
+    }
+
+    .profile-box h2 {
+      margin-bottom: 15px;
+      font-size: 3rem;
+      font-weight: 700;
+    }
+
+    .avatar img{
+      width: 60px;
+      height:60px;
+      margin: 15px 0;
+    }
+
+    .profile-info {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    /* Buttons */
+    .profile-box button {
+      background: #BA174A;
+      border: none;
+      margin: 8px 0;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      display: block;
+      width: 100%;
+    }
+
+    .profile-box button:hover {
+      background: #ff2e54;
+      transform: scale(1.05);
+    }
+
+    @media(max-width:768px){
+      .profile-box {
+        width: 320px;
+        padding: 30px 20px;
+      }
+      .profile-box h2 {
+        font-size: 1.8rem;
+      }
+      .profile-info {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    ❤️ <span>Valatine Ai</span>
+  </div>
+
+  <!-- Profile Box -->
+  <div class="profile-box">
+    <h2>Profile</h2>
+    <div class="avatar"><img src='avatar1.png'></div>
+    <div class="profile-info">
+      <p><strong>Username :</strong> MohithSai</p>
+      <p><strong>Email :</strong> bmspt1@gmail.com</p>
+      <p><strong>Mobile :</strong> 8919770821</p>
+    </div>
+
+    <button onclick="goHome()">Back to Homepage ❤️</button>
+    <button onclick="deleteAccount()">Delete Account ❤️</button>
+    <button onclick="logout()">Logout ❤️</button>
+  </div>
+
+  <script>
+    // Button Actions
+    function goHome() {
+      alert("Going back to Homepage 🏠");
+      window.location.href = "dashboard.html"; // Uncomment to link homepage
+    }
+
+    function deleteAccount() {
+      let confirmDelete = confirm("Are you sure you want to delete your account? ❌");
+      if (confirmDelete) {
+        alert("Your account has been deleted 💔");
+        // Perform delete logic here
+      }
+    }
+
+    function logout() {
+      alert("You have been logged out. 👋");
+      window.location.href = "login.html"; // Uncomment to link login page
+    }
+  </script>
+
+</body>
+</html>

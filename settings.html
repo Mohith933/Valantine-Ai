@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valatine Ai - Profile</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    body {
+      background: #8b1c41;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: white;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .navbar span {
+      color: #fff;
+    }
+
+    /* Profile Card */
+    .settings-card {
+      background: linear-gradient(135deg, #c1275b, #8b1c41);
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
+      width: 420px;
+      text-align: center;
+    }
+
+    .settings-card h2 {
+      margin-bottom: 15px;
+      font-size: 3rem;
+      font-weight: 700;
+    }
+
+    .avatar span{
+        font-size:40px;
+      margin: 15px 0;
+    }
+    .setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    font-size: 16px;
+}
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0;
+    right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #ff5b5b;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+/* Toggle switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+   button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background: #ff4b6e;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ff2a55;
+}
+
+    @media(max-width:768px){
+      .settings-card {
+        width: 320px;
+        padding: 30px 20px;
+      }
+      .settings-card h2 {
+        font-size: 1.8rem;
+      }
+      .settings-card span{
+        font-size:20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    ❤️ <span>Valatine Ai</span>
+  </div>
+
+ <div class="settings-card">
+            <h2>Settings</h2>
+            <div class="avatar">
+                <span>❤️</span>
+            </div>
+
+            <div class="setting-item">
+                <label for="darkMode">Dark Mode</label>
+                <label class="switch">
+                    <input type="checkbox" id="darkMode">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-item">
+                <label for="changePassword">Change Password</label>
+                <label class="switch">
+                    <input type="checkbox" id="changePassword">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-item">
+                <label for="enableNotifications">Enable Notifications</label>
+                <label class="switch">
+                    <input type="checkbox" id="enableNotifications">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <button id="saveBtn" >Save Settings ❤️</button>
+            <button onclick="gohome()">Back to Homepage ❤️</button>
+        </div>
+    </div>
+
+  <script>
+    function goHome(){
+    alert("Back to homepage");
+    window.location.href = 'dashboard.html';
+}
+    const darkMode = document.getElementById('darkMode');
+const changePassword = document.getElementById('changePassword');
+const enableNotifications = document.getElementById('enableNotifications');
+const saveBtn = document.getElementById('saveBtn');
+const backBtn = document.getElementById('backBtn');
+
+// Save settings to localStorage
+
+saveBtn.addEventListener('click', () => {
+    const settings = {
+        darkMode: darkMode.checked,
+        changePassword: changePassword.checked,
+        enableNotifications: enableNotifications.checked
+    };
+    localStorage.setItem('valatineSettings', JSON.stringify(settings));
+    alert('Settings saved!');
+});
+  </script>
+
+</body>
+</html>

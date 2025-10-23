@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valantine AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #9b1c3c, #BA174A);
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ✅ Fixed Navbar */
+    nav {
+      width: 100%;
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(155, 28, 60, 0.95);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      backdrop-filter: blur(6px);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo span {
+      font-size: 1.5rem;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background: #BA174A;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #e33c66;
+      transform: scale(1.05);
+    }
+
+    header {
+      margin-top: 150px; /* ✅ Offset so navbar doesn't cover it */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 800px;
+      padding: 20px;
+    }
+
+    header img {
+      width: 180px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 10px rgba(255, 192, 203, 0.3));
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #ffe4ec;
+      margin-bottom: 30px;
+    }
+
+    /* ✅ Try Button */
+    .try-btn {
+      padding: 14px 30px;
+      background: #ff2e54;
+      border: none;
+      border-radius: 15px;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(255, 0, 64, 0.3);
+    }
+
+    .try-btn:hover {
+      background: #ff5478;
+      transform: translateY(-3px);
+    }
+
+    .features {
+      margin-top: 80px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      max-width: 1000px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 30px;
+      width: 250px;
+      transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .card h2 {
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #ffdce4;
+    }
+
+    footer {
+      margin-top: 100px;
+      font-size: 0.9rem;
+      color: #ffd6e0;
+      padding-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      .logo{
+        font-size:1.1rem;
+      }
+      .card {
+        width: 80%;
+      }
+
+      nav {
+        padding: 15px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">
+      <span>❤️</span> Valantine AI
+    </div>
+    <div>
+      <button class="btn" onclick="window.location.href='signup.html'">Sign Up</button>
+      <button class="btn" onclick="window.location.href='login.html'">Login</button>
+    </div>
+  </nav>
+
+  <header>
+    <img src="pic.png" alt="Valantine Logo">
+    <h1>Fall in Love with AI That Feels</h1>
+    <p>Valantine AI understands emotions, creates art from affection, and turns every interaction into something
+      beautiful. Experience text, image, audio, and video generation — powered by love and intelligence.</p>
+
+    <button class="try-btn" onclick="window.location.href='index.html'">💖 Try Valantine AI</button>
+  </header>
+
+  <section class="features">
+    <div class="card">
+      <h2>💬 Vali-1</h2>
+      <p>Valantine’s LLM — talk, write, and connect emotionally with natural understanding.</p>
+    </div>
+    <div class="card">
+      <h2>🎨 Vislia</h2>
+      <p>Turn feelings into images. Create romantic, dreamy visuals that tell your heart’s story.</p>
+    </div>
+    <div class="card">
+      <h2>🎥 Movlia</h2>
+      <p>Generate cinematic love stories and expressive video moments with your words.</p>
+    </div>
+    <div class="card">
+      <h2>🎵 Sonlia</h2>
+      <p>Compose voices, songs, and sounds that capture emotion — pure heart in every note.</p>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Valantine AI — Crafted with ❤️ by Solulure Labs.
+  </footer>
+</body>
+
+</html>
