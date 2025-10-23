@@ -1,1 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valantine AI 💕</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Quicksand',sans-serif;}
+body{
+  background:#9b1c3c;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
+/* Navbar */
+.navbar{
+  width:100%;
+  padding:15px 25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:linear-gradient(90deg,#9b1c3c,#8b1c41);
+  box-shadow:0 0 12px rgba(255,100,150,0.4);
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:10;
+}
+.logo{font-weight:700;font-size:1.4rem;display:flex;align-items:center;gap:8px;}
+.buttons{display:flex;gap:10px;}
+.btn{
+  padding:6px 14px;
+  background:#ba174a;
+  border:none;
+  border-radius:10px;
+  color:white;
+  font-weight:500;
+  cursor:pointer;
+  transition:0.3s ease;
+}
+.btn:hover{background:#e33c66;}
+
+/* Hero Section */
+.hero{
+  margin-top:120px;
+  margin-bottom:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  animation:fadeIn 1s ease-in;
+}
+.hero h1{font-size:1.8rem;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* Chat Window */
+.chat-window{
+  width:90%;
+  margin-top:80px;
+  max-width:600px;
+  margin-bottom:110px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:8px;
+  padding-bottom:50px;
+}
+
+/* Messages */
+.message{
+  max-width:75%;
+  padding:10px 14px;
+  border-radius:18px;
+  line-height:1.5;
+  font-size:15px;
+  opacity:0;
+  transform:translateY(15px);
+  transition:all 0.3s ease-in-out;
+  word-wrap:break-word;
+}
+.message.visible{opacity:1;transform:translateY(0);}
+.user-message{
+  align-self:flex-end;
+  background:#ba174a;
+  border-bottom-right-radius:5px;
+}
+.ai-message{
+  align-self:flex-start;
+  color:white;
+  margin-right:0;
+  border-bottom-left-radius:5px;
+}
+
+/* Input Area */
+.input-box{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  width:90%;
+  max-width:600px;
+  background:linear-gradient(90deg,#ba174a,#97165c);
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+.chatbox{
+  flex:1;
+  background:transparent;
+  border:none;
+  outline:none;
+  color:white;
+  font-size:1rem;
+  resize:none;
+  height:60px;
+}
+.chatbox::placeholder{color:#f2b6c7;}
+.send-btn{
+  border:none;
+  background:transparent;
+  color:white;
+  font-size:30px;
+  cursor:pointer;
+  margin-left:10px;
+  transition:transform 0.2s;
+}
+.send-btn:hover{transform:scale(1.2);color:#ffb6c1;}
+
+/* Footer */
+.footer{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  text-align:center;
+  background:#9b1c3c;
+  color:#ddd;
+  padding:3px 0;
+  font-size:0.8rem;
+  z-index:5;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+
+/* Floating hearts background */
+.heart-bg span{
+  position:fixed;
+  bottom:-10px;
+  color:rgba(255,255,255,0.2);
+  animation:floatHearts 10s linear infinite;
+  font-size:18px;
+  z-index:0;
+}
+.heart-bg span:nth-child(1){left:10%;animation-delay:0s;}
+.heart-bg span:nth-child(2){left:30%;animation-delay:2s;}
+.heart-bg span:nth-child(3){left:50%;animation-delay:4s;}
+.heart-bg span:nth-child(4){left:70%;animation-delay:6s;}
+.heart-bg span:nth-child(5){left:90%;animation-delay:8s;}
+@keyframes floatHearts{
+  0%{transform:translateY(100vh) scale(0.5);opacity:0.6;}
+  100%{transform:translateY(-10vh) scale(1.2);opacity:0;}
+}
+
+@media(max-width:600px){
+  .hero h1{font-size:1.5rem;}
+  .chatbox{height:50px;}
+}
+</style>
+</head>
+<body>
+
+<!-- Floating hearts background -->
+<div class="heart-bg">
+  <span>💖</span><span>💕</span><span>💞</span><span>💓</span><span>💗</span>
+</div>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">❤️ Valantine AI</div>
+  <div class="buttons">
+    <button class="btn">Edit</button>
+    <button class="btn">Login</button>
+    <button class="btn">Signup</button>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>Where should we begin, beautiful soul? 💕</h1>
+</div>
+
+<!-- Chat Window -->
+<div class="chat-window" id="chatWindow"></div>
+
+<!-- Input Box -->
+<div class="input-box">
+  <textarea class="chatbox" placeholder="Message Valantine AI..."></textarea>
+  <button class="send-btn">↗</button>
+</div>
+
+<!-- Footer -->
+<div class="footer">💌 Valantine AI can make mistakes. Check important info.</div>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  const chatWindow=document.querySelector("#chatWindow");
+  const chatbox=document.querySelector(".chatbox");
+  const sendBtn=document.querySelector(".send-btn");
+  const hero=document.querySelector(".hero");
+
+  sendBtn.addEventListener("click",sendMessage);
+  chatbox.addEventListener("keydown",e=>{
+    if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage();}
+  });
+
+  function sendMessage(){
+    const text=chatbox.value.trim();
+    if(!text)return;
+    chatbox.value="";
+    hero.style.display="none";
+    addMessage("user",text);
+    setTimeout(()=>{addMessage("ai",generateAIResponse(text));},800);
+  }
+
+  function addMessage(sender,text){
+    const div=document.createElement("div");
+    div.classList.add("message",sender==="user"?"user-message":"ai-message");
+    div.innerHTML=text;
+    chatWindow.appendChild(div);
+    setTimeout(()=>div.classList.add("visible"),10);
+    window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+  }
+
+  function generateAIResponse(msg){
+    msg=msg.toLowerCase();
+    if(msg.includes("hello")||msg.includes("hi"))
+      return "🌸 Hello, beautiful soul! I’m <b>Valantine AI</b> — here to make your world warmer 💕";
+    if(msg.includes("good morning"))
+      return "☀️ Good Morning! Let love guide your steps today 🌼";
+    if(msg.includes("good night"))
+      return "🌙 Sweet Dreams! Rest peacefully and dream with love 💫";
+    if(msg.includes("love"))
+      return "❤️ Love grows when shared 🌸 Heals wounds 🌹 and makes life magical 💕";
+    if(msg.includes("sad")||msg.includes("lonely"))
+      return "🌧 Even in sadness, you’re not alone. Valantine AI is with you 💖";
+    if(msg.includes("motivate")||msg.includes("inspire"))
+      return "💪 Be proud of how far you’ve come. The universe smiles at your strength 🌷";
+    if(msg.includes("quote"))
+      return "📜 “The heart that gives love never runs empty.” 💞";
+    if(msg.includes("bye"))
+      return "💌 Goodbye, dear one. Love will wait till we meet again 🌙";
+    if(msg.includes("who are you"))
+      return "💖 I’m <b>Valantine AI</b>, a heart-crafted soul that speaks in kindness and warmth 🌹";
+    return "💬 Tell me more, I’m listening with love 🌸";
+  }
+});
+</script>
+</body>
+</html>
