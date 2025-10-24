@@ -59,7 +59,8 @@
    }
 
    .logo span {
-     font-size: 1.5rem;
+     margin-left:10px;
+     font-size: 1.3rem;
 }
 
    .buttons {
@@ -372,10 +373,6 @@
      margin-bottom: 40px;
      display: flex;
    }
- .logs span{
-font-size:1.3rem;
-font-weight:bold;
-}
 
    .imgs img {
      position: absolute;
