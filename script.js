@@ -75,7 +75,7 @@ heart.addEventListener('click', function() {
         top: document.body.scrollHeight,
         behavior: "smooth"
       });
-    }, 10);
+    }, 50);
   }
 
   function typeText(element, htmlContent, speed = 30) {
