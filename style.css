@@ -415,61 +415,10 @@
    }
    h3{
     display: none;
-     font-size: 1rem;
-     margin:20px;
+     font-size: 1rem;
      font-weight: lighter;
      text-align: left;
-   }
-   ul{
-    display:none;
-   }
-   .sidebar-actions {
-  display: none;
-  justify-content: space-around;
-  margin: 10px 0;
-}
-.sidebar.open .sidebar-actions{
-  display: flex;
-}
-
-.sidebar-actions button {
-  background: rgba(255, 255, 255, 0.15);
-  border: none;
-  color: #fff;
-  font-size: 0.85rem;
-  padding: 6px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.sidebar-actions button:hover {
-  background: rgba(255, 255, 255, 0.25);
-}
-
-#allChatsContainer {
-  margin: 10px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  padding: 10px;
-  overflow-y: auto;
-  max-height: 40vh;
-}
-
-#allChatsContainer.hidden {
-  display: none;
-}
-
-#allChats li {
-  color: #fff;
-  margin: 5px 0;
-  font-size: 0.9rem;
-}
-
-
-   .sidebar.open ul,li{
-    display: block;
-   }
+   }
    .sidebar.open h3{
     display:block;
    }
@@ -480,31 +429,7 @@
   color: #fff;
   font-size: 1.1rem;
   border-bottom: 1px solid #fff3;
-}
-
-#recentChats {
-  list-style: none;
-  padding: 0;
-  margin: 10px;
-  max-height: 60vh;
-  overflow-y: auto;
-}
-
-#recentChats li {
-  background: rgba(255, 255, 255, 0.15);
-  margin: 5px 0;
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  color: #fff;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-#recentChats li:hover {
-  background: rgba(255, 255, 255, 0.25);
-}
-
+}
    /* Sidebar open state */
    .sidebar.open {
      display: block;
