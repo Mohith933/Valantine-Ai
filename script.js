@@ -31,10 +31,13 @@ function updateRecentChatsUI() {
 
 // Function to add new chat
 function addRecentChat(message) {
-  const text = message.substring(0, 30); // first few words
-  recentChats.push(text);
-  if (recentChats.length > 20) recentChats.shift(); // limit stored history
-  localStorage.setItem("recentChats", JSON.stringify(recentChats));
+  const text = message.substring(0, 60);
+  const monthKey = `recentChats_${new Date().toISOString().slice(0,7)}`; // e.g. 2025-11
+  let monthChats = JSON.parse(localStorage.getItem(monthKey)) || [];
+  monthChats.push(text);
+  if (monthChats.length > 50) monthChats.shift(); // limit to 50 per month
+  localStorage.setItem(monthKey, JSON.stringify(monthChats));
+  recentChats = monthChats; // update active view
   updateRecentChatsUI();
 }
   // Main send function
@@ -107,6 +110,15 @@ showAllBtn.addEventListener("click", () => {
     showAllBtn.textContent = "📁 Show All";
   }
 });
+
+function showMemoryVault() {
+  let keys = Object.keys(localStorage).filter(k => k.startsWith("recentChats_"));
+  let vault = keys.map(k => {
+    const chats = JSON.parse(localStorage.getItem(k)) || [];
+    return `<h3>${k.replace('recentChats_','')} 💖</h3><ul>${chats.map(c=>`<li>${c}</li>`).join('')}</ul>`;
+  }).join('');
+  document.body.innerHTML = `<div class='memory-vault'>${vault}</div>`;
+}
 
   
   // Show messages inside chat window
