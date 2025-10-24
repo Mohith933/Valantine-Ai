@@ -23,7 +23,7 @@
    /* Navbar */
    .navbar {
       width: 100%;
-      padding: 20px 50px;
+      padding: 20px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -37,7 +37,7 @@
 
    .navbars {
       width: 100%;
-      padding: 20px 50px;
+      padding: 20px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -419,7 +419,8 @@ font-weight:bold;
    }
    h3{
     display: none;
-     font-size: 1rem;
+     font-size: 1rem;
+    margin:20px;
      font-weight: lighter;
      text-align: left;
    }
