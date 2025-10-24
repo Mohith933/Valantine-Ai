@@ -20,8 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Main send function
   function sendMessage() {
     const userMessage = chatbox.value.trim();
-    if (userMessage) {
-      addRecentChat(userMessage); // 🩷 Add to recents
+    if (userMessage) {
     addMessageToChat(userMessage);
       chatbox.value = "";
     }
