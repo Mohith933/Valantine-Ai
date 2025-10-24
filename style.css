@@ -536,7 +536,7 @@
      }
    }
 /* 🌸 Smooth global animations for Valantine AI */
-body, .hero, .input-box, .chat-window, .navbar{
+body, .hero, .input-box, .chat-window, .navbar,.footer{
   animation: fadeSlideIn 1s ease-in-out;
 }
 
