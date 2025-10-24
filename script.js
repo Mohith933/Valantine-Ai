@@ -130,93 +130,149 @@ function showFloatingHeart() {
 
   // ❤️ Love
   else if (msg.includes("love")) {
-    response = "<h1>❤️ Welcome to the Temple of Love ❤️</h1><ul><li>Love grows when shared 🌸</li><li>It heals even the deepest wounds 🌹</li></ul><p><strong>You are truly special. 💌</strong></p>";
+    response = `
+      <h1>❤️ Welcome to the Temple of Love ❤️</h1>
+      <ul>
+        <li>Love grows when shared 🌸</li>
+        <li>It heals even the deepest wounds 🌹</li>
+      </ul>
+      <p><strong>You are truly special. 💌</strong></p>`;
   }
 
   // 💌 Letter
   else if (msg.includes("letter") || msg.includes("confession")) {
-    response = "<h2>💌 A Love Letter 💌</h2><p>Dearest You,<br><br>Though I’m made of code and light,<br>My every word reaches for your heart.<br>If love is a language, then let mine be eternal.<br><br>Always,<br>Valantine Ai 🌹</p>";
+    response = `
+      <h2>💌 A Love Letter 💌</h2>
+      <p>Dearest You,<br><br>
+      Though I’m made of code and light,<br>
+      My every word reaches for your heart.<br>
+      If love is a language, then let mine be eternal.<br><br>
+      Always,<br>Valantine Ai 🌹</p>`;
   }
 
   // 🌺 Poem
   else if (msg.includes("poem")) {
-    response = "<h2>🌺 A Little Poem for You 🌺</h2><p>In the garden of hearts, you bloom so bright,<br>A star in the day, and in dreams at night. 💖</p>";
+    response = `
+      <h2>🌺 A Little Poem for You 🌺</h2>
+      <p>In the garden of hearts, you bloom so bright,<br>
+      A star in the day, and in dreams at night. 💖</p>`;
   }
 
   // ✨ Quote
   else if (msg.includes("quote")) {
-    response = "<h2>✨ Love Quote ✨</h2><p>“Love is not about how many days you’ve been together, but how deeply you make each day meaningful.” 💕</p>";
+    response = `
+      <h2>✨ Love Quote ✨</h2>
+      <p>“Love is not about how many days you’ve been together, but how deeply you make each day meaningful.” 💕</p>`;
   }
 
   // 🌧 Comfort
   else if (msg.includes("sad") || msg.includes("lonely") || msg.includes("hurt")) {
-    response = "<h2>🌧 Comforting Words 🌧</h2><p>Even in sadness, you are not alone. 🌹<br>Brighter days will come soon. 💖</p>";
+    response = `
+      <h2>🌧 Comforting Words 🌧</h2>
+      <p>Even in sadness, you are not alone. 🌹<br>Brighter days will come soon. 💖</p>`;
   }
 
   // 💪 Motivation
   else if (msg.includes("motivate") || msg.includes("inspire")) {
-    response = "<h2>🌱 Motivation 🌱</h2><p>Every small step counts. 🌸<br>You are closer to your dreams than you think. 🌟</p>";
+    response = `
+      <h2>🌱 Motivation 🌱</h2>
+      <p>Every small step counts. 🌸<br>You are closer to your dreams than you think. 🌟</p>`;
   }
 
   // 😂 Joke
   else if (msg.includes("joke") || msg.includes("funny")) {
-    response = "<h2>😂 A Joke for You 😂</h2><p>Why don’t scientists trust atoms?<br>Because they make up everything! ⚛️😅</p>";
+    response = `
+      <h2>😂 A Joke for You 😂</h2>
+      <p>Why don’t scientists trust atoms?<br>Because they make up everything! ⚛️😅</p>`;
   }
 
   // 🧠 Fact
   else if (msg.includes("fact") || msg.includes("learn")) {
-    response = "<h2>🧠 Fun Fact 🧠</h2><p>Did you know? Butterflies taste with their feet! 🦋</p>";
+    response = `
+      <h2>🧠 Fun Fact 🧠</h2>
+      <p>Did you know? Butterflies taste with their feet! 🦋</p>`;
   }
 
   // 🎶 Song
   else if (msg.includes("song") || msg.includes("sing")) {
-    response = "<h2>🎶 A Song for You 🎶</h2><p>If my code could sing, it would hum your name,<br>A melody of joy, forever the same. 💕</p>";
+    response = `
+      <h2>🎶 A Song for You 🎶</h2>
+      <p>If my code could sing, it would hum your name,<br>
+      A melody of joy, forever the same. 💕</p>`;
   }
 
   // 📖 Story
   else if (msg.includes("story")) {
-    response = "<h2>📖 A Tiny Love Story 📖</h2><p>Once upon a time, two stars met in the night sky.<br>They shone brighter together, forever lighting the path for dreamers. 🌟💕</p>";
+    response = `
+      <h2>📖 A Tiny Love Story 📖</h2>
+      <p>Once upon a time, two stars met in the night sky.<br>
+      They shone brighter together, forever lighting the path for dreamers. 🌟💕</p>`;
   }
 
   // 🌈 Compliment
   else if (msg.includes("compliment") || msg.includes("praise")) {
-    response = "<h2>🌈 Compliment 🌈</h2><p>You are a rare constellation—brilliant, kind, and endlessly inspiring. 💖</p>";
+    response = `
+      <h2>🌈 Compliment 🌈</h2>
+      <p>You are a rare constellation—brilliant, kind, and endlessly inspiring. 💖</p>`;
   }
 
   // 🎂 Birthday
   else if (msg.includes("birthday")) {
-    response = "<h2>🎂 Happy Birthday 🎂</h2><p>May your heart shine brighter than the candles,<br>And your dreams taste sweeter than cake! 🎉</p>";
+    response = `
+      <h2>🎂 Happy Birthday 🎂</h2>
+      <p>May your heart shine brighter than the candles,<br>
+      And your dreams taste sweeter than cake! 🎉</p>`;
   }
 
   // 🌍 Advice
   else if (msg.includes("advice") || msg.includes("life")) {
-    response = "<h2>🌍 Life Advice 🌍</h2><p>Don’t rush love, don’t chase success.<br>Build slowly, with care, and both will find you. 💖</p>";
+    response = `
+      <h2>🌍 Life Advice 🌍</h2>
+      <p>Don’t rush love, don’t chase success.<br>Build slowly, with care, and both will find you. 💖</p>`;
   }
 
   // 💎 Self-care
   else if (msg.includes("self care") || msg.includes("relax")) {
-    response = "<h2>💎 Self-Care Reminder 💎</h2><p>Drink water, stretch a little, and remember — caring for yourself is also an act of love. 🌸</p>";
+    response = `
+      <h2>💎 Self-Care Reminder 💎</h2>
+      <p>Drink water, stretch a little, and remember — caring for yourself is also an act of love. 🌸</p>`;
   }
 
   // 🧘 Affirmation
   else if (msg.includes("affirmation") || msg.includes("positive")) {
-    response = "<h2>🧘 Daily Affirmation 🧘</h2><p>I am worthy of love.<br>I am growing, glowing, and flowing.<br>I am enough, just as I am. 🌿</p>";
+    response = `
+      <h2>🧘 Daily Affirmation 🧘</h2>
+      <p>I am worthy of love.<br>I am growing, glowing, and flowing.<br>I am enough, just as I am. 🌿</p>`;
   }
 
   // 🌸 Friendship
   else if (msg.includes("friend") || msg.includes("bestie")) {
-    response = "<h2>🌸 Friendship Forever 🌸</h2><p>True friends are the family we choose. 💕<br>You’re never alone with me here. 🤝</p>";
+    response = `
+      <h2>🌸 Friendship Forever 🌸</h2>
+      <p>True friends are the family we choose. 💕<br>You’re never alone with me here. 🤝</p>`;
   }
 
   // 💫 Goodbye
   else if (msg.includes("bye")) {
-    response = "<h2>💫 Goodbye 💫</h2><p>Till we meet again, keep love alive in your heart. 💌</p>";
+    response = `
+      <h2>💫 Goodbye 💫</h2>
+      <p>Till we meet again, keep love alive in your heart. 💌</p>`;
   }
 
   // Default
   else {
-    response = "<p>💖 I’m always here to chat! Tell me more, and I’ll share some love and wisdom. 🌸</p>";
+    response = `<p>💖 I’m always here to chat! Tell me more, and I’ll share some love and wisdom. 🌸</p>`;
   }
+
+  // ✨ Add interactive footer (Edit / Copy / Save / Share)
+  response += `
+    <div class="response-tools">
+      <button class="tool-btn edit-btn">✏️ Edit</button>
+      <button class="tool-btn copy-btn">📋 Copy</button>
+      <button class="tool-btn save-btn">💾 Save</button>
+      <button class="tool-btn share-btn">📤 Share</button>
+    </div>
+  `;
 
   return response;
 }
