@@ -97,6 +97,17 @@ heart.addEventListener('click', function() {
 
     typeChar();
   }
+// 💕 Create floating heart animation
+function showFloatingHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("floating-heart");
+  heart.textContent = "❤️";
+  heart.style.left = Math.random() * 80 + 10 + "%"; // random horizontal position
+  document.body.appendChild(heart);
+
+  // Remove after animation ends
+  setTimeout(() => heart.remove(), 3000);
+}
 
   async function generateAIResponse(userMessage) {
   const msg = userMessage.toLowerCase();
