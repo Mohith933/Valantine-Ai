@@ -16,30 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
       sendMessage();
     }
   });
-  // ✅ Store and display recent chats
-const recentChatsContainer = document.getElementById("recentChats");
-let recentChats = JSON.parse(localStorage.getItem("recentChats")) || [];
-
-// Function to update sidebar list
-function updateRecentChatsUI() {
-  if (!recentChatsContainer) return;
-  recentChatsContainer.innerHTML = recentChats
-    .slice(-5) // show last 5
-    .map(chat => `<li>💌 ${chat}</li>`)
-    .join("");
-}
-
-// Function to add new chat
-function addRecentChat(message) {
-  const text = message.substring(0, 60);
-  const monthKey = `recentChats_${new Date().toISOString().slice(0,7)}`; // e.g. 2025-11
-  let monthChats = JSON.parse(localStorage.getItem(monthKey)) || [];
-  monthChats.push(text);
-  if (monthChats.length > 50) monthChats.shift(); // limit to 50 per month
-  localStorage.setItem(monthKey, JSON.stringify(monthChats));
-  recentChats = monthChats; // update active view
-  updateRecentChatsUI();
-}
+  
   // Main send function
   function sendMessage() {
     const userMessage = chatbox.value.trim();
@@ -50,8 +27,6 @@ function addRecentChat(message) {
     }
 
     adjustLayoutForViewport();
-    updateRecentChatsUI();
-    updateAllChatsUI();
 
     // UI tweaks after first message
     hero.style.display = "none";
@@ -66,60 +41,7 @@ function addRecentChat(message) {
     footer.style.fontSize = "12px";
     footer.innerHTML = "Valatine Ai can make mistakes. Check important info.";
   
-  }
-  const allChatsContainer = document.getElementById("allChatsContainer");
-const allChatsList = document.getElementById("allChats");
-const clearChatsBtn = document.getElementById("clearChatsBtn");
-const showAllBtn = document.getElementById("showAllBtn");
-
-// Update small recents list (already defined)
-function updateRecentChatsUI() {
-  if (!recentChatsContainer) return;
-  recentChatsContainer.innerHTML = recentChats
-    .slice(-5)
-    .map((chat, i) => `<li>💌 ${chat}</li>`)
-    .join("");
-}
-
-// Update full stored chats
-function updateAllChatsUI() {
-  if (!allChatsList) return;
-  allChatsList.innerHTML = recentChats
-    .map((chat, i) => `<li>${i + 1}. ${chat}</li>`)
-    .join("");
-}
-
-// Clear all chats
-clearChatsBtn.addEventListener("click", () => {
-  if (confirm("⚠️ Are you sure you want to delete all stored chats?")) {
-    recentChats = [];
-    localStorage.removeItem("recentChats");
-    updateRecentChatsUI();
-    updateAllChatsUI();
-    alert("🗑 All chats cleared!");
-  }
-});
-
-// Toggle full stored chats
-showAllBtn.addEventListener("click", () => {
-  allChatsContainer.classList.toggle("hidden");
-  if (!allChatsContainer.classList.contains("hidden")) {
-    updateAllChatsUI();
-    showAllBtn.textContent = "🔽 Hide All";
-  } else {
-    showAllBtn.textContent = "📁 Show All";
-  }
-});
-
-function showMemoryVault() {
-  let keys = Object.keys(localStorage).filter(k => k.startsWith("recentChats_"));
-  let vault = keys.map(k => {
-    const chats = JSON.parse(localStorage.getItem(k)) || [];
-    return `<h3>${k.replace('recentChats_','')} 💖</h3><ul>${chats.map(c=>`<li>${c}</li>`).join('')}</ul>`;
-  }).join('');
-  document.body.innerHTML = `<div class='memory-vault'>${vault}</div>`;
-}
-
+  }
   
   // Show messages inside chat window
   function addMessageToChat(message) {
@@ -167,7 +89,7 @@ function makeMessageVisible(messageElement) {
 }
 
 
-function typeText(element, htmlContent, speed = 20) {
+function typeText(element, htmlContent, speed = 30) {
   let i = 0;
   let tempDiv = document.createElement("div");
   tempDiv.innerHTML = htmlContent;
