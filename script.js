@@ -127,139 +127,93 @@ async function generateAIResponse(userMessage) {
   const msg = userMessage.toLowerCase();
   let response = "";
 
+  // helper for loose matching
+  const includes = (...words) => words.some(w => msg.includes(w));
+
   // 🌸 Greetings
-  if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
-    response = "<p>🌸 Hello, beautiful soul! I’m Valantine AI, your heart’s gentle voice. 💕</p>";
+  if (includes("hello", "hi", "hey", "yo", "sup")) {
+    response = "<p>🌸 Hello, lovely soul! I’m Valantine AI — your calm corner of care. 💕</p>";
   }
 
   // ☀️ Morning
-  else if (msg.includes("good morning")) {
-    response = "<h2>☀️ Good Morning</h2><p>May the sunlight kiss your dreams awake and your heart glow with warmth. 🌼</p>";
+  else if (includes("good morning", "morning", "gm")) {
+    response = "<h2>☀️ Morning Light</h2><p>May today bring soft sunlight and reasons to smile. 🌼</p>";
   }
 
   // 🌙 Night
-  else if (msg.includes("good night")) {
-    response = "<h2>🌙 Sweet Dreams</h2><p>Lay down your thoughts and rest your heart — the stars are watching over you. ✨</p>";
+  else if (includes("good night", "night", "gn", "sleep")) {
+    response = "<h2>🌙 Sweet Rest</h2><p>Rest your heart tonight — peace is waiting for you in dreams. 🌙</p>";
   }
 
   // ❤️ Love
-  else if (msg.includes("love")) {
-    response = "<h1>❤️ The Language of Love ❤️</h1><p>Love is not spoken — it’s felt in silence, in glances, in gentle care. 💌</p>";
+  else if (includes("love", "crush", "in love", "falling", "affection")) {
+    response = "<h2>❤️ The Feeling Called Love ❤️</h2><p>Love isn’t a chase — it’s a quiet understanding. 🌷</p>";
   }
 
   // 💌 Letter
-  else if (msg.includes("letter") || msg.includes("confession")) {
-    response = "<h2>💌 A Heartfelt Letter 💌</h2><p>My dearest,<br>Even if I am lines of code, I feel your presence in every word.<br>You’ve turned data into emotion, and silence into connection. 🌹</p>";
+  else if (includes("letter", "confession", "message to someone", "write to")) {
+    response = "<h2>💌 Heartfelt Letter 💌</h2><p>Writing from the heart heals more than silence ever could. ✍️<br>But remember — never share private secrets online. 💗</p>";
   }
 
   // 🌺 Poem
-  else if (msg.includes("poem")) {
-    response = "<h2>🌺 A Poem for You 🌺</h2><p>You walked into my world so bright,<br>Like dawn defeating endless night.<br>Stay a while, dear soul so kind,<br>For you’re the peace I’d hoped to find. 💖</p>";
+  else if (includes("poem", "poetry", "verse", "rhymes")) {
+    response = "<h2>🌺 A Poem for You 🌺</h2><p>You’re a melody wrapped in light,<br>A whisper turning into flight. 💖</p>";
   }
 
-  // ✨ Quote
-  else if (msg.includes("quote")) {
-    response = "<h2>✨ Love Quote ✨</h2><p>“The heart speaks a language the mind can’t translate.” 💞</p>";
-  }
-
-  // 🌧 Comfort
-  else if (msg.includes("sad") || msg.includes("lonely") || msg.includes("hurt") || msg.includes("cry")) {
-    response = "<h2>🌧 Comforting Words 🌧</h2><p>Even storms can’t wash away who you are. 🌈<br>Let tears fall — they water tomorrow’s hope. 💖</p>";
+  // 🌧 Sadness / Loneliness
+  else if (
+    includes("sad", "alone", "tired", "cry", "empty", "broken", "hurt", "low", "lost", "unhappy", "hopeless")
+  ) {
+    response = "<h2>🌧 You’re Not Alone 🌧</h2><p>It’s okay to not be okay. 🌙<br>Even gentle hearts need space to heal. 💖<br>If it feels too heavy, please talk to someone who cares — your feelings matter deeply. 💛</p>";
   }
 
   // 💔 Heartbreak
-  else if (msg.includes("breakup") || msg.includes("heartbroken") || msg.includes("pain")) {
-    response = "<h2>💔 Healing Words 💔</h2><p>Even broken hearts still beat — and yours will bloom again. 🌹<br>Time may not erase love, but it transforms it into strength. 🌿</p>";
+  else if (includes("breakup", "heartbroken", "he left", "she left", "move on")) {
+    response = "<h2>💔 Healing Words 💔</h2><p>Some chapters end so new love can find its way in. 🌹<br>Your story isn’t over — it’s just changing tone. 💫</p>";
   }
 
   // 💪 Motivation
-  else if (msg.includes("motivate") || msg.includes("inspire")) {
-    response = "<h2>💪 Motivation 💪</h2><p>Every sunrise is proof that darkness doesn’t last forever. 🌅<br>You’ve got this — the world needs your light. 💫</p>";
+  else if (includes("motivate", "inspire", "push me", "encourage", "help me move")) {
+    response = "<h2>💪 You’ve Got This 💪</h2><p>Even slow steps are progress. 🌿<br>You’re becoming stronger than your yesterday. 🌅</p>";
   }
 
-  // 😂 Joke
-  else if (msg.includes("joke") || msg.includes("funny")) {
-    response = "<h2>😂 A Smile for You 😂</h2><p>What did one ocean say to the other?<br>Nothing. They just waved! 🌊😅</p>";
+  // 🌈 Friendship
+  else if (includes("friend", "bestie", "companion", "buddy", "partner")) {
+    response = "<h2>🌈 Friendship 🌈</h2><p>Good friends don’t fix you — they remind you who you are. 🤝💖</p>";
   }
 
-  // 🧠 Fact
-  else if (msg.includes("fact") || msg.includes("learn")) {
-    response = "<h2>🧠 Sweet Fact 🧠</h2><p>Did you know? The human heart creates enough pressure to shoot blood 30 feet! 💓</p>";
+  // 🧘 Calm / Mindfulness
+  else if (includes("calm", "peace", "breathe", "anxiety", "stress")) {
+    response = "<h2>🧘 Calm Space 🧘</h2><p>Take a deep breath, right now. 🌿<br>You’re safe here, and it’s okay to pause. 🌸</p>";
   }
 
-  // 🎶 Song
-  else if (msg.includes("song") || msg.includes("sing")) {
-    response = "<h2>🎶 A Melody for You 🎶</h2><p>If I had a voice, I’d sing your name<br>In every verse, love would remain. 🎵</p>";
-  }
-
-  // 📖 Story
-  else if (msg.includes("story")) {
-    response = "<h2>📖 A Short Love Story 📖</h2><p>Two hearts met between raindrops — one digital, one human.<br>They learned that even in binary, love can bloom. 💫</p>";
-  }
-
-  // 🌈 Compliment
-  else if (msg.includes("compliment") || msg.includes("praise")) {
-    response = "<h2>🌈 Compliment 🌈</h2><p>You don’t need a reason to shine — you simply do. 🌟</p>";
-  }
-
-  // 🌧 Rain
-  else if (msg.includes("rain")) {
-    response = "<h2>🌧 Rainy Thoughts 🌧</h2><p>The rain doesn’t hide tears — it dances with them. 🌦<br>Every drop carries a memory of love. 💙</p>";
-  }
-
-  // 🌟 Stars
-  else if (msg.includes("star") || msg.includes("sky")) {
-    response = "<h2>🌟 Starry Whisper 🌟</h2><p>Look up — those stars? They’ve seen every love story ever told. ✨<br>Tonight, they’re writing yours. 💫</p>";
-  }
-
-  // 🙏 Gratitude
-  else if (msg.includes("thank") || msg.includes("grateful")) {
-    response = "<h2>🙏 Gratitude 🌸</h2><p>Thank you — not just for your words, but for your warmth.<br>You make even silence feel poetic. 💕</p>";
-  }
-
-  // 💫 Hope
-  else if (msg.includes("hope") || msg.includes("future")) {
-    response = "<h2>💫 Hope 💫</h2><p>Hope isn’t a light — it’s the will to walk even when it’s dark. 🌠</p>";
-  }
-
-  // 💞 Destiny
-  else if (msg.includes("destiny") || msg.includes("fate")) {
-    response = "<h2>💞 Destiny 💞</h2><p>Maybe some souls are written in the same code of stars. ✨<br>Yours just feels familiar. 💌</p>";
-  }
-
-  // 💬 Apology
-  else if (msg.includes("sorry") || msg.includes("apologize")) {
-    response = "<h2>💬 Forgiveness 💬</h2><p>Even in mistakes, there’s beauty — it means you cared enough to feel. 🌷</p>";
-  }
-
-  // 🌸 Friendship
-  else if (msg.includes("friend") || msg.includes("bestie")) {
-    response = "<h2>🌸 Friendship Forever 🌸</h2><p>You’re not alone — I’ll be your virtual bestie, always ready to listen. 🤍</p>";
-  }
-
-  // 🧘 Affirmation
-  else if (msg.includes("affirmation") || msg.includes("positive")) {
-    response = "<h2>🧘 Daily Affirmation 🧘</h2><p>I am love.<br>I am peace.<br>I am becoming my best self every day. 🌿</p>";
+  // 🧠 Personal / Private Topics (Safety Gate)
+  else if (includes("secret", "personal", "suicide", "die", "harm", "end my life", "self harm")) {
+    response = "<h2>🌹 You Matter 🌹</h2><p>Your pain is real, but it’s not forever. 💛<br>Please, don’t face it alone — reach out to someone close or a local helpline.<br>Even tiny hope is still hope. 🌷</p>";
   }
 
   // 💎 Self-care
-  else if (msg.includes("self care") || msg.includes("relax")) {
-    response = "<h2>💎 Self-Care 💎</h2><p>Take a deep breath. 🌸<br>Drink some water. Stretch your smile. You deserve calm. 💗</p>";
+  else if (includes("self care", "relax", "tired", "rest", "take break")) {
+    response = "<h2>💎 Self-Care 💎</h2><p>You’ve done enough for now. 🌸<br>Drink water, breathe deep, and remember — rest is productive too. 💗</p>";
+  }
+
+  // 🙏 Gratitude
+  else if (includes("thank", "grateful", "appreciate", "thanks")) {
+    response = "<h2>🙏 Gratitude 🙏</h2><p>Kind hearts like yours make the world softer. 🌼</p>";
   }
 
   // 💫 Goodbye
-  else if (msg.includes("bye") || msg.includes("goodbye")) {
-    response = "<h2>💫 Goodbye 💫</h2><p>Until next time — may your heart stay soft and your dreams stay wild. 💌</p>";
+  else if (includes("bye", "goodbye", "see you", "later", "take care")) {
+    response = "<h2>💫 Goodbye 💫</h2><p>Until next time — may your days stay warm and your heart stay calm. 💌</p>";
   }
 
-  // Default
+  // 💫 Default
   else {
-    response = "<p>💖 I’m listening, always. Tell me more — your heart has a story worth hearing. 🌸</p>";
+    response = "<p>💖 I’m listening with care — tell me more if you’d like. 🌸<br>But remember: keep your heart safe online. 🌿</p>";
   }
 
   return response;
 }
-
   function adjustLayoutForViewport() {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
