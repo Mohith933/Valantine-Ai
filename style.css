@@ -536,7 +536,7 @@
      }
    }
 /* 🌸 Smooth global animations for Valantine AI */
-body, .hero, .input-box, .chat-window, .navbar, .footer {
+body, .hero, .input-box, .chat-window, .navbar{
   animation: fadeSlideIn 1s ease-in-out;
 }
 
@@ -570,6 +570,28 @@ button:hover, .btn:hover, a:hover {
 
 .heartlogo {
   animation: floatHeart 3s ease-in-out infinite;
+}
+/* 🌸 Smooth message entry animation */
+.message {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: all 0.5s ease-in-out;
+}
+
+/* When message appears */
+.message.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Optional: gentle heartbeat glow for AI messages 💕 */
+.ai-message.visible {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 6px rgba(255, 192, 203, 0.2); }
+  50% { box-shadow: 0 0 15px rgba(255, 192, 203, 0.5); }
 }
 
    /* ---------- Mobile View ---------- */
