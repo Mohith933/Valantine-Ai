@@ -9,10 +9,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Send message when button clicked
   sendBtn.addEventListener('click', sendMessage);
- const heart = document.getElementById('heart');
-heart.addEventListener('click',function()){
-window.location.href = 'index.html;
-}
+const heart = document.getElementById('heart');
+heart.addEventListener('click', function() {
+  window.location.href = 'index.html';
+});
 
   // Send message on Enter key (Shift+Enter makes new line)
   chatbox.addEventListener('keydown', function (event) {
