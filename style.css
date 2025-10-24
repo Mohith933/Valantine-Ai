@@ -535,6 +535,42 @@
        opacity: 0.6;
      }
    }
+/* 🌸 Smooth global animations for Valantine AI */
+body, .hero, .input-box, .chat-window, .navbar, .footer {
+  animation: fadeSlideIn 1s ease-in-out;
+}
+
+/* Keyframes for a soft entrance */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth hover transitions for all buttons and links */
+button, .btn, a {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Gentle scaling on hover */
+button:hover, .btn:hover, a:hover {
+  transform: scale(1.05);
+}
+
+/* 🌹 Floating heart animation (optional for hero or logo) */
+@keyframes floatHeart {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.heartlogo {
+  animation: floatHeart 3s ease-in-out infinite;
+}
 
    /* ---------- Mobile View ---------- */
 @media (max-width: 768px) {
