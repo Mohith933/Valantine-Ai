@@ -78,25 +78,40 @@ heart.addEventListener('click', function() {
     }, 50);
   }
 
-  function typeText(element, htmlContent, speed = 30) {
-    let i = 0;
-    const text = htmlContent.replace(/<[^>]*>/g, ''); // strip HTML tags for typing
-    element.innerHTML = "";
+  // === VALANTINE AI TYPE EFFECT ===  
+function typeText(element, htmlContent, speed = 40) {
+  let i = 0;
+  const text = htmlContent.replace(/<[^>]*>/g, ''); // Remove HTML tags for clean typing
+  element.innerHTML = "";
 
-    function typeChar() {
-      if (i < text.length) {
-        element.textContent = text.substring(0, i + 1);
-        i++;
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-        setTimeout(typeChar, speed);
-      } else {
-        element.innerHTML = htmlContent; // show formatted HTML after typing done
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-      }
+  // Apply gentle fade-in animation
+  element.style.transition = "opacity 0.4s ease-in-out";
+  element.style.opacity = "0.8";
+
+  function typeChar() {
+    if (i < text.length) {
+      element.textContent = text.substring(0, i + 1);
+      i++;
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+
+      // Add slight rhythm: slow down on commas & periods (emotional pacing)
+      const char = text.charAt(i);
+      let delay = speed;
+      if (char === ',' || char === ';') delay += 100;
+      if (char === '.' || char === '!' || char === '?') delay += 200;
+
+      setTimeout(typeChar, delay);
+    } else {
+      // Once done typing, show full formatted content softly
+      element.innerHTML = htmlContent;
+      element.style.opacity = "1";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
     }
-
-    typeChar();
   }
+
+  // Small romantic delay before typing starts
+  setTimeout(typeChar, 400);
+}
 // 💕 Create floating heart animation
 function showFloatingHeart() {
   const heart = document.createElement("div");
