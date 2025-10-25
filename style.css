@@ -165,7 +165,7 @@
   display: flex;
   flex-direction: column;
   max-height: none;
-  background: linear-gradient(135deg, #ffb6c1, #ffccd5, #ffd6e0);
+  background: linear-gradient(135deg, #ff9eb8, #ffb6c1, #ffccd5)
   box-shadow: 0 0 15px rgba(255, 192, 203, 0.4);
   border-radius: 14px;
   transition: all 0.4s ease;
@@ -181,7 +181,7 @@
   margin: 0px;
   padding:10px;
   width:100%;
-  background: #9b1c3c;
+  background: linear-gradient(135deg, #ff9eb8, #ffb6c1, #ffccd5)
   font-size: 0.8rem;
   color:white;
 }
