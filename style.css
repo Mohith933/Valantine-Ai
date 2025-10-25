@@ -310,7 +310,7 @@ font-size: 0.8rem;
 color:white;
 
 }
-.love-block-container {
+.code-container {
 background: linear-gradient(135deg, #ff9eb8, #ffb6c1, #ffccd5);
 color: #5a0032;
 border-radius: 14px;
@@ -319,7 +319,7 @@ box-shadow: 0 0 15px rgba(255, 192, 203, 0.5);
 overflow: hidden;
 }
 
-.love-toolbar {
+.btn-group {
 display: flex;
 justify-content: space-between;
 align-items: center;
@@ -334,7 +334,7 @@ color: #b0004d;
 font-size: 0.95rem;
 }
 
-.love-content {
+.code-content {
 font-family: "Quicksand", cursive;
 font-size: 1rem;
 padding: 16px;
