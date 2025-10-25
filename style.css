@@ -177,6 +177,53 @@
   font-size: 0.8rem;
   color:white;
 }
+.love-block-container {
+  background: linear-gradient(135deg, #ff9eb8, #ffb6c1, #ffccd5);
+  color: #5a0032;
+  border-radius: 14px;
+  margin: 18px 0;
+  box-shadow: 0 0 15px rgba(255, 192, 203, 0.5);
+  overflow: hidden;
+}
+
+.love-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 8px 12px;
+  backdrop-filter: blur(6px);
+}
+
+.love-label {
+  font-weight: bold;
+  color: #b0004d;
+  font-size: 0.95rem;
+}
+
+.love-content {
+  font-family: "Quicksand", cursive;
+  font-size: 1rem;
+  padding: 16px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.btn-group button {
+  background: #b0004d;
+  color: white;
+  border: none;
+  margin-left: 6px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.btn-group button:hover {
+  background: #ff2b6d;
+  transform: scale(1.05);
+}
    /* Common chat message style */
    .message {
      max-width: 70%;
