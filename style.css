@@ -35,7 +35,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(155, 28, 60, 0.95);
+  background: linear-gradient(135deg, #2b0015, #3a0a20, #5a0032);
   position: fixed;
   top: 0;
   left: 0;
