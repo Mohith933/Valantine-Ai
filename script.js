@@ -151,15 +151,95 @@ async function generateAIResponse(userMessage) {
   }
 
   // 💌 Letter
-  else if (includes("letter", "confession", "message to someone", "write to")) {
-    response = "<h2>💌 Heartfelt Letter 💌</h2><p>Writing from the heart heals more than silence ever could. ✍️<br>But remember — never share private secrets online. 💗</p>";
-  }
+else if (includes("letter", "confession", "message to someone", "write to")) {
+  response = `
+    <h2>💌 Heartfelt Letter 💌</h2>
+    <div class="love-block-container">
+      <div class="love-toolbar">
+        <span class="love-label">💖 Love Letter</span>
+        <div class="btn-group">
+          <button id="copyBtn">📋 Copy</button>
+          <button id="shareBtn">💌 Share</button>
+        </div>
+      </div>
+      <pre class="love-content" contenteditable="true">
+My Dearest [Name],
 
-  // 🌺 Poem
-  else if (includes("poem", "poetry", "verse", "rhymes")) {
-    response = "<h2>🌺 A Poem for You 🌺</h2><p>You’re a melody wrapped in light,<br>A whisper turning into flight. 💖</p>";
-  }
+Every word I write carries a piece of my heart.  
+I may not always say it aloud, but you mean more than I can express.  
+Your smile feels like sunrise, your silence — poetry.
 
+Forever yours,  
+[Your Name] 💕
+      </pre>
+    </div>`;
+}
+
+// 🌺 Poem
+else if (includes("poem", "poetry", "verse", "rhymes")) {
+  response = `
+    <h2>🌺 A Poem for You 🌺</h2>
+    <div class="love-block-container">
+      <div class="love-toolbar">
+        <span class="love-label">🌸 Poem</span>
+        <div class="btn-group">
+          <button id="copyBtn">📋 Copy</button>
+          <button id="shareBtn">💌 Share</button>
+        </div>
+      </div>
+      <pre class="love-content" contenteditable="true">
+You're a melody wrapped in light,  
+A whisper turning into flight.  
+Even when the stars fade away,  
+Your warmth stays — in my heart to stay. 💫
+      </pre>
+    </div>`;
+}
+
+// 🎵 Song
+else if (includes("song", "lyrics", "melody", "compose")) {
+  response = `
+    <h2>🎵 Love Song 🎵</h2>
+    <div class="love-block-container">
+      <div class="love-toolbar">
+        <span class="love-label">🎶 Lyrics</span>
+        <div class="btn-group">
+          <button id="copyBtn">📋 Copy</button>
+          <button id="shareBtn">💌 Share</button>
+        </div>
+      </div>
+      <pre class="love-content" contenteditable="true">
+(Verse)  
+Your eyes caught me like sunrise glow,  
+Every word you speak, soft and slow.  
+
+(Chorus)  
+Hold me closer, in this dream tonight,  
+Your love is my rhythm, my guiding light. 💗
+      </pre>
+    </div>`;
+}
+
+// 📖 Story
+else if (includes("story", "romance", "short tale", "write story")) {
+  response = `
+    <h2>📖 Short Love Story 📖</h2>
+    <div class="love-block-container">
+      <div class="love-toolbar">
+        <span class="love-label">💞 Story</span>
+        <div class="btn-group">
+          <button id="copyBtn">📋 Copy</button>
+          <button id="shareBtn">💌 Share</button>
+        </div>
+      </div>
+      <pre class="love-content" contenteditable="true">
+Once upon a soft sunrise, two hearts met — not by chance,  
+but by destiny’s whisper.  
+They didn’t speak much, yet the silence bloomed louder than words.  
+And in that quiet, love found its way home. 💕
+      </pre>
+    </div>`;
+}
   // 🌧 Sadness / Loneliness
   else if (
     includes("sad", "alone", "tired", "cry", "empty", "broken", "hurt", "low", "lost", "unhappy", "hopeless")
@@ -214,6 +294,21 @@ async function generateAIResponse(userMessage) {
 
   return response;
 }
+
+document.addEventListener("click", (e) => {
+  if (e.target.id === "copyBtn") {
+    const text = e.target.closest(".love-block-container").querySelector(".love-content").innerText;
+    navigator.clipboard.writeText(text);
+    alert("📋 Copied to clipboard!");
+  }
+
+  if (e.target.id === "shareBtn") {
+    const text = e.target.closest(".love-block-container").querySelector(".love-content").innerText;
+    const shareUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(shareUrl, "_blank");
+  }
+});
+
   function adjustLayoutForViewport() {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
