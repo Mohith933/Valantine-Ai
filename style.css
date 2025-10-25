@@ -9,8 +9,8 @@
     margin-bottom:150px;
    }
    body {
-  background: linear-gradient(135deg, #ff9eb8, #ffb6c1, #ffccd5);
-  color: #5a0032;
+  background: linear-gradient(135deg, #2b0015, #3a0a20, #5a0032);
+color: #ffb6c1;;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,9 +52,8 @@
      margin-left: 25px;
    }
 .navbar, .navbars, .footer, .sidebar {
-  background: linear-gradient(90deg, #ff9eb8, #ffb6c1);
-  color: #5a0032;
-}
+  background: linear-gradient(135deg, #2b0015, #3a0a20, #5a0032);
+color: #ffb6c1;
 
    .logo {
      display: flex;
@@ -114,7 +113,8 @@
    .input-box {
      display: flex;
      align-items: center;
-     background: linear-gradient(135deg, #ffb6c1, #ffccd5, #ffd6e0);
+    background: linear-gradient(135deg, #2b0015, #3a0a20, #5a0032);
+color: #ffb6c1;
      border-radius: 15px;
      padding: 10px 15px;
      width: 50%;
@@ -165,7 +165,7 @@
   display: flex;
   flex-direction: column;
   max-height: none;
-  background: #ffccd5;
+  background: linear-gradient(135deg, #2b0015, #3a0a20, #5a0032);
   border-radius: 14px;
   transition: all 0.4s ease;
 }
@@ -180,13 +180,13 @@
   margin: 0px;
   padding:10px;
   width:100%;
-  background: linear-gradient(135deg, #ff9eb8, #ffb6c1, #ffccd5)
+  background: linear-gradient(135deg, #2b0015, #3a0a20, #5a0032);
   font-size: 0.8rem;
   color:white;
 }
 .love-block-container {
-  background: linear-gradient(135deg, #ff9eb8, #ffb6c1, #ffccd5);
-  color: #5a0032;
+  background: linear-gradient(135deg,#2b0015, #3a0a20, #5a0032);
+  color: #ffb6c1;
   border-radius: 14px;
   margin: 18px 0;
   box-shadow: 0 0 15px rgba(255, 192, 203, 0.5);
@@ -253,7 +253,7 @@
 
    /* User messages (right side, pink bubble) */
    .user-message {
-     background: linear-gradient(135deg, #ffb6c1, #ffccd5, #ffd6e0);
+     background: linear-gradient(135deg, #2b0015, #3a0a20, #5a0032);
      color: white;
      margin-left: auto;
      /* push to right */
@@ -402,7 +402,8 @@
      top: 0;
      height: 100vh;
      width: 50px;
-     background: linear-gradient(180deg, #9b1c3c);
+     background: linear-gradient(135deg, #2b0015, #3a0a20, #5a0032);
+color: #ffb6c1;
      display: flex;
      flex-direction: column;
      align-items: center;
