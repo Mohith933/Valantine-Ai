@@ -1,170 +1,220 @@
+
 document.addEventListener('DOMContentLoaded', function () {
-const hero = document.querySelector('.hero');
-const chatWindow = document.querySelector('.chat-window');
-const sendBtn = document.querySelector('.send-btn');
-const chatbox = document.querySelector('.chatbox');
-const inputArea = document.querySelector('.input-box');
-const footer = document.querySelector('.footer');
+  // ---- element refs ----
+  const hero = document.querySelector('.hero');
+  const chatWindow = document.querySelector('.chat-window');
+  const sendBtn = document.querySelector('.send-btn');
+  const chatbox = document.querySelector('.chatbox');
+  const inputArea = document.querySelector('.input-box');
+  const footer = document.querySelector('.footer');
+  const heartLogo = document.getElementById('heart'); // optional
 
-// Send message when button clicked
-sendBtn.addEventListener('click', sendMessage);
-const heart = document.getElementById('heart');
-heart.addEventListener('click', function() {
-window.location.href = 'index.html';
-});
+  // safe guards
+  if (!chatWindow || !sendBtn || !chatbox) return;
 
-// Send message on Enter key (Shift+Enter makes new line)
-chatbox.addEventListener('keydown', function (event) {
-if (event.key === 'Enter' && !event.shiftKey) {
-event.preventDefault();
-sendMessage();
-}
-});
+  // navigate home if heart clicked (optional)
+  if (heartLogo) {
+    heartLogo.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  }
 
-function sendMessage() {
-const userMessage = chatbox.value.trim();
-if (userMessage) {
-addMessageToChat(userMessage);
-chatbox.value = "";
-}
+  // send events
+  sendBtn.addEventListener('click', sendMessage);
+  chatbox.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      sendMessage();
+    }
+  });
 
-adjustLayoutForViewport();    
+  window.addEventListener('resize', adjustLayoutForViewport);
+  adjustLayoutForViewport();
 
-hero.style.display = "none";    
-inputArea.style.position = "fixed";    
-chatWindow.style.marginTop = "80px";    
-inputArea.style.bottom = "35px";    
-inputArea.style.left = "50%";    
-inputArea.style.transform = "translateX(-50%)";    
-footer.style.marginTop = "0px";    
-chatWindow.style.display = "flex";    
-footer.style.fontSize = "12px";    
-footer.innerHTML = "Valantine Ai can make mistakes. Check important info.";
+  // ---- main send ----
+  function sendMessage() {
+    const userMessage = chatbox.value.trim();
+    if (!userMessage) return;
 
-}
+    addMessageToChat(userMessage);
+    chatbox.value = "";
 
-// Add user + AI messages
-function addMessageToChat(message) {
-const newMessage = document.createElement("div");
-newMessage.classList.add("message", "user-message");
-newMessage.textContent = message;
-chatWindow.appendChild(newMessage);
-makeMessageVisible(newMessage);
+    // layout changes
+    hero && (hero.style.display = "none");
+    inputArea.style.position = "fixed";
+    inputArea.style.bottom = "35px";
+    inputArea.style.left = "50%";
+    inputArea.style.transform = "translateX(-50%)";
+    chatWindow.style.marginTop = "80px";
+    chatWindow.style.display = "flex";
+    footer.style.marginTop = "0px";
+    footer.style.fontSize = "12px";
+    footer.innerHTML = "Valantine Ai can make mistakes. Check important info.";
+  }
 
-const aiMessage = document.createElement("div");    
-aiMessage.classList.add("message", "ai-message");    
-aiMessage.innerHTML = `    
-  <div class="typing-hearts">    
-    <span>❤️</span><p>Thinking...</p>    
-  </div>    
-`;    
-chatWindow.appendChild(aiMessage);    
-makeMessageVisible(aiMessage);    
+  // ---- add messages & AI placeholder ----
+  function addMessageToChat(message) {
+    // user message
+    const userMsg = document.createElement("div");
+    userMsg.className = "message user-message";
+    userMsg.textContent = message;
+    chatWindow.appendChild(userMsg);
+    makeMessageVisible(userMsg);
 
-setTimeout(async () => {    
-  const response = await generateAIResponse(message);    
-  aiMessage.innerHTML = "";    
-  typeText(aiMessage, response);    
-}, 1500);
+    // ai placeholder with dynamic heart + status
+    const aiMsg = document.createElement("div");
+    aiMsg.className = "message ai-message";
+    aiMsg.innerHTML = `
+      <div class="ai-typing">
+        <span class="ai-heart" aria-hidden="true">❤️</span>
+        <span class="ai-status">Thinking...</span>
+      </div>
+    `;
+    chatWindow.appendChild(aiMsg);
+    makeMessageVisible(aiMsg);
 
-}
+    // animate the heart (small rotation loop via inline CSS keyframes fallback)
+    animateHeart(aiMsg.querySelector('.ai-heart'));
 
-function makeMessageVisible(messageElement) {
-setTimeout(() => {
-messageElement.classList.add("visible");
-window.scrollTo({
-top: document.body.scrollHeight,
-behavior: "smooth"
-});
-}, 50);
-}
+    // show floating heart little effect
+    showFloatingHeart();
 
-// === VALANTINE AI TYPE EFFECT ===
-function typeText(element, htmlContent, speed = 40) {
-let i = 0;
-const text = htmlContent.replace(/<[^>]*>/g, ''); // Remove HTML tags for clean typing
-element.innerHTML = "";
+    // dynamic status: Thinking -> Generating -> done
+    setTimeout(() => {
+      const status = aiMsg.querySelector('.ai-status');
+      if (status) status.textContent = 'Generating...';
+    }, 700);
 
-// Apply gentle fade-in animation
-element.style.transition = "opacity 0.4s ease-in-out";
-element.style.opacity = "0.8";
+    // get response and type it
+    setTimeout(async () => {
+      const response = await generateAIResponse(message);
+      // type response into aiMsg
+      typeText(aiMsg, response, 22);
+    }, 1400);
+  }
 
-function typeChar() {
-if (i < text.length) {
-element.textContent = text.substring(0, i + 1);
-i++;
-window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  // show with animation and scroll
+  function makeMessageVisible(el) {
+    setTimeout(() => {
+      el.classList.add('visible');
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }, 50);
+  }
 
-// Add slight rhythm: slow down on commas & periods (emotional pacing)    
-  const char = text.charAt(i);    
-  let delay = speed;    
-  if (char === ',' || char === ';') delay += 100;    
-  if (char === '.' || char === '!' || char === '?') delay += 200;    
+  // typing effect — strips tags for pacing but restores full HTML at the end
+  function typeText(element, htmlContent, speed = 20) {
+    // build plain-text for typing, but keep html for final
+    const temp = document.createElement('div');
+    temp.innerHTML = htmlContent;
+    const text = temp.innerText;
+    element.innerHTML = ''; // clear placeholder
 
-  setTimeout(typeChar, delay);    
-} else {    
-  // Once done typing, show full formatted content softly    
-  element.innerHTML = htmlContent;    
-  element.style.opacity = "1";    
-  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });    
-}
+    let i = 0;
 
-}
+    function typeChar() {
+      if (i < text.length) {
+        // show progressively (plain text while typing)
+        element.textContent = text.substring(0, i + 1);
+        i++;
+        // punctuation rhythm
+        const ch = text.charAt(i);
+        let delay = speed;
+        if (ch === ',' || ch === ';') delay += 80;
+        if (ch === '.' || ch === '!' || ch === '?') delay += 180;
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        setTimeout(typeChar, delay);
+      } else {
+        // final: restore full HTML content
+        element.innerHTML = htmlContent;
+        makeMessageVisible(element); // ensure visible class
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      }
+    }
 
-// Small romantic delay before typing starts
-setTimeout(typeChar, 400);
-}
-// 💕 Create floating heart animation
-function showFloatingHeart() {
-const heart = document.createElement("div");
-heart.classList.add("floating-heart");
-heart.textContent = "❤️";
-heart.style.left = Math.random() * 80 + 10 + "%"; // random horizontal position
-document.body.appendChild(heart);
+    // small pre-typing pause for feel
+    setTimeout(typeChar, 320);
+  }
 
-// Remove after animation ends
-setTimeout(() => heart.remove(), 3000);
-}
-async function generateAIResponse(userMessage) {
-const msg = userMessage.toLowerCase();
-let response = "";
+  // small rotating heart animation helper (uses inline transform loop)
+  function animateHeart(heartEl) {
+    if (!heartEl) return;
+    let angle = 0;
+    const id = setInterval(() => {
+      angle = (angle + 6) % 360;
+      heartEl.style.display = 'inline-block';
+      heartEl.style.transform = `rotate(${angle}deg) scale(${1 + 0.02 * Math.sin(angle / 10)})`;
+      heartEl.style.transition = 'transform 80ms linear';
+    }, 80);
 
-// helper for loose matching
-const includes = (...words) => words.some(w => msg.includes(w));
+    // stop after a while (keeps some subtle effect)
+    setTimeout(() => clearInterval(id), 3000);
+  }
 
-// 🌸 Greetings
-if (includes("hello", "hi", "hey", "yo", "sup")) {
-response = "<p>🌸 Hello, lovely soul! I’m Valantine AI — your calm corner of care. 💕</p>";
-}
+  // floating heart effect (simple)
+  function showFloatingHeart() {
+    const el = document.createElement('div');
+    el.className = 'floating-heart';
+    el.textContent = '❤️';
+    // styling inline so you don't have to change CSS
+    Object.assign(el.style, {
+      position: 'fixed',
+      bottom: '-10px',
+      left: Math.random() * 70 + 15 + '%',
+      fontSize: '20px',
+      opacity: '0.9',
+      pointerEvents: 'none',
+      zIndex: 9999,
+      transform: 'translateY(0) scale(0.8)',
+      transition: 'transform 2600ms cubic-bezier(.2,.9,.1,1), opacity 2600ms ease'
+    });
+    document.body.appendChild(el);
 
-// ☀️ Morning
-else if (includes("good morning", "morning", "gm")) {
-response = "<h2>☀️ Morning Light</h2><p>May today bring soft sunlight and reasons to smile. 🌼</p>";
-}
+    // animate up + fade
+    requestAnimationFrame(() => {
+      el.style.transform = 'translateY(-120vh) scale(1.4)';
+      el.style.opacity = '0';
+    });
 
-// 🌙 Night
-else if (includes("good night", "night", "gn", "sleep")) {
-response = "<h2>🌙 Sweet Rest</h2><p>Rest your heart tonight — peace is waiting for you in dreams. 🌙</p>";
-}
+    setTimeout(() => el.remove(), 3000);
+  }
 
-// ❤️ Love
-else if (includes("love", "crush", "in love", "falling", "affection")) {
-response = "<h2>❤️ The Feeling Called Love ❤️</h2><p>Love isn’t a chase — it’s a quiet understanding. 🌷</p>";
-}
+  // safe includes helper
+  function includesAny(msg, arr) {
+    return arr.some(w => msg.includes(w));
+  }
 
-// 💌 Letter
-else if (includes("love letter", "confession", "message to someone", "write to")) {
-response = `
-<h2>💌 Heartfelt Letter 💌</h2>
-<div class="love-block-container">
-<div class="love-toolbar">
-<span class="love-label">💖 Love Letter</span>
-<div class="btn-group">
-<button id="copyBtn">📋 Copy</button>
-<button id="shareBtn">💌 Share</button>
-</div>
-</div>
-<pre class="love-content" contenteditable="true">
+  // ---- AI response logic (valid template strings only) ----
+  async function generateAIResponse(userMessage) {
+    const msg = userMessage.toLowerCase().trim();
+
+    // helper
+    const includes = (...words) => includesAny(msg, words);
+
+    // responses (strings of HTML)
+    if (includes('hello', 'hi', 'hey', 'yo', 'sup')) {
+      return `<p>🌸 Hello, lovely soul! I’m <strong>Valantine AI</strong> — your calm corner of care. 💕</p>`;
+    }
+
+    if (includes('good morning', 'morning', 'gm')) {
+      return `<h2>☀️ Morning Light</h2><p>May today bring soft sunlight and reasons to smile. 🌼</p>`;
+    }
+
+    if (includes('good night', 'night', 'gn', 'sleep')) {
+      return `<h2>🌙 Sweet Rest</h2><p>Rest your heart tonight — peace is waiting for you in dreams. 🌙</p>`;
+    }
+
+    if (includes('love', 'crush', 'confession')) {
+      return `
+        <h2>💌 Heartfelt Letter</h2>
+        <div class="love-block-container">
+          <div class="love-toolbar">
+            <span class="love-label">💖 Love Letter</span>
+            <div class="btn-group">
+              <button class="copy-btn">📋 Copy</button>
+              <button class="share-btn">💌 Share</button>
+            </div>
+          </div>
+          <pre class="love-content" contenteditable="true">
 My Dearest [Name],
 
 Every word I write carries a piece of my heart.
@@ -173,28 +223,42 @@ Your smile feels like sunrise, your silence — poetry.
 
 Forever yours,
 [Your Name] 💕
-</pre>
-</div>`;
-}
+          </pre>
+        </div>`;
+    }
 
-// 🌺 Poem
-else if (includes("poem", "poetry", "verse", "rhymes")) {
-response =      <h2>🌺 A Poem for You 🌺</h2>     <div class="love-block-container">     <div class="love-toolbar">     <span class="love-label">🌸 Poem</span>     <div class="btn-group">     <button id="copyBtn">📋 Copy</button>     <button id="shareBtn">💌 Share</button>     </div>     </div>     <pre class="love-content" contenteditable="true">     You're a melody wrapped in light,       A whisper turning into flight.       Even when the stars fade away,       Your warmth stays — in my heart to stay. 💫     </pre>     </div>;
-}
+    if (includes('poem', 'poetry', 'verse', 'rhymes')) {
+      return `
+        <h2>🌺 A Poem for You 🌺</h2>
+        <div class="love-block-container">
+          <div class="love-toolbar">
+            <span class="love-label">🌸 Poem</span>
+            <div class="btn-group">
+              <button class="copy-btn">📋 Copy</button>
+              <button class="share-btn">💌 Share</button>
+            </div>
+          </div>
+          <pre class="love-content" contenteditable="true">
+You're a melody wrapped in light,
+A whisper turning into flight.
+Even when the stars fade away,
+Your warmth stays — in my heart to stay. 💫
+          </pre>
+        </div>`;
+    }
 
-// 🎵 Song
-else if (includes("song", "lyrics", "melody", "compose")) {
-response = `
-<h2>🎵 Love Song 🎵</h2>
-<div class="love-block-container">
-<div class="love-toolbar">
-<span class="love-label">🎶 Lyrics</span>
-<div class="btn-group">
-<button id="copyBtn">📋 Copy</button>
-<button id="shareBtn">💌 Share</button>
-</div>
-</div>
-<pre class="love-content" contenteditable="true">
+    if (includes('song', 'lyrics', 'melody', 'compose')) {
+      return `
+        <h2>🎵 Love Song 🎵</h2>
+        <div class="love-block-container">
+          <div class="love-toolbar">
+            <span class="love-label">🎶 Lyrics</span>
+            <div class="btn-group">
+              <button class="copy-btn">📋 Copy</button>
+              <button class="share-btn">💌 Share</button>
+            </div>
+          </div>
+          <pre class="love-content" contenteditable="true">
 (Verse)
 Your eyes caught me like sunrise glow,
 Every word you speak, soft and slow.
@@ -202,128 +266,99 @@ Every word you speak, soft and slow.
 (Chorus)
 Hold me closer, in this dream tonight,
 Your love is my rhythm, my guiding light. 💗
-</pre>
-</div>`;
-}
+          </pre>
+        </div>`;
+    }
 
-// 📖 Story
-else if (includes("story", "romance", "short tale", "write story")) {
-response =      <h2>📖 Short Love Story 📖</h2>     <div class="love-block-container">     <div class="love-toolbar">     <span class="love-label">💞 Story</span>     <div class="btn-group">     <button id="copyBtn">📋 Copy</button>     <button id="shareBtn">💌 Share</button>     </div>     </div>     <pre class="love-content" contenteditable="true">     Once upon a soft sunrise, two hearts met — not by chance,       but by destiny’s whisper.       They didn’t speak much, yet the silence bloomed louder than words.       And in that quiet, love found its way home. 💕     </pre>     </div>;
-}
-// 🌧 Sadness / Loneliness
-else if (
-includes("sad", "alone", "tired", "cry", "empty", "broken", "hurt", "low", "lost", "unhappy", "hopeless")
-) {
-response = "<h2>🌧 You’re Not Alone 🌧</h2><p>It’s okay to not be okay. 🌙<br>Even gentle hearts need space to heal. 💖<br>If it feels too heavy, please talk to someone who cares — your feelings matter deeply. 💛</p>";
-}
+    if (includes('story', 'short tale')) {
+      return `
+        <h2>📖 Short Love Story 📖</h2>
+        <div class="love-block-container">
+          <div class="love-toolbar">
+            <span class="love-label">💞 Story</span>
+            <div class="btn-group">
+              <button class="copy-btn">📋 Copy</button>
+              <button class="share-btn">💌 Share</button>
+            </div>
+          </div>
+          <pre class="love-content" contenteditable="true">
+Once upon a soft sunrise, two hearts met — not by chance,
+but by destiny’s whisper.
+They didn’t speak much, yet the silence bloomed louder than words.
+And in that quiet, love found its way home. 💕
+          </pre>
+        </div>`;
+    }
 
-// 💔 Heartbreak
-else if (includes("breakup", "heartbroken", "he left", "she left", "move on")) {
-response = "<h2>💔 Healing Words 💔</h2><p>Some chapters end so new love can find its way in. 🌹<br>Your story isn’t over — it’s just changing tone. 💫</p>";
-}
+    if (includes('sad', 'alone', 'tired', 'cry', 'empty', 'broken', 'hurt', 'low', 'lost')) {
+      return `<h2>🌧 You’re Not Alone 🌧</h2><p>It’s okay to not be okay. Even gentle hearts need space to heal. If it's too heavy, please reach out — you matter deeply. 💛</p>`;
+    }
 
-// 💪 Motivation
-else if (includes("motivate", "inspire", "push me", "encourage", "help me move")) {
-response = "<h2>💪 You’ve Got This 💪</h2><p>Even slow steps are progress. 🌿<br>You’re becoming stronger than your yesterday. 🌅</p>";
-}
+    if (includes('motivate', 'inspire', 'push me')) {
+      return `<h2>💪 You’ve Got This 💪</h2><p>Even slow steps are progress — you’re stronger than your yesterday. 🌷</p>`;
+    }
 
-// 🌈 Friendship
-else if (includes("friend", "bestie", "companion", "buddy", "partner")) {
-response = "<h2>🌈 Friendship 🌈</h2><p>Good friends don’t fix you — they remind you who you are. 🤝💖</p>";
-}
+    if (includes('bye', 'goodbye', 'see you')) {
+      return `<h2>💫 Goodbye 💫</h2><p>Until next time — may your days stay warm and your heart stay calm. 💌</p>`;
+    }
 
-// 🧘 Calm / Mindfulness
-else if (includes("calm", "peace", "breathe", "anxiety", "stress")) {
-response = "<h2>🧘 Calm Space 🧘</h2><p>Take a deep breath, right now. 🌿<br>You’re safe here, and it’s okay to pause. 🌸</p>";
-}
+    // default
+    return `<p>💖 I’m listening with care — tell me more if you’d like. 🌸</p>`;
+  }
 
-// 🧠 Personal / Private Topics (Safety Gate)
-else if (includes("secret", "personal", "suicide", "die", "harm", "end my life", "self harm")) {
-response = "<h2>🌹 You Matter 🌹</h2><p>Your pain is real, but it’s not forever. 💛<br>Please, don’t face it alone — reach out to someone close or a local helpline.<br>Even tiny hope is still hope. 🌷</p>";
-}
+  // ---- copy/share/save delegation ----
+  document.addEventListener('click', (e) => {
+    const copyBtn = e.target.closest('.copy-btn');
+    const shareBtn = e.target.closest('.share-btn');
+    const saveBtn = e.target.closest('.save-btn'); // reserved if needed
 
-// 💎 Self-care
-else if (includes("self care", "relax", "tired", "rest", "take break")) {
-response = "<h2>💎 Self-Care 💎</h2><p>You’ve done enough for now. 🌸<br>Drink water, breathe deep, and remember — rest is productive too. 💗</p>";
-}
+    if (copyBtn) {
+      const container = copyBtn.closest('.love-block-container') || copyBtn.closest('.editable-container') || copyBtn.closest('.code-block-container');
+      if (!container) return;
+      const contentEl = container.querySelector('.love-content, .editable-content, .code-content, pre');
+      if (!contentEl) return;
+      const text = contentEl.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        copyBtn.textContent = '✅ Copied';
+        setTimeout(() => (copyBtn.textContent = '📋 Copy'), 2000);
+      });
+    }
 
-// 🙏 Gratitude
-else if (includes("thank", "grateful", "appreciate", "thanks")) {
-response = "<h2>🙏 Gratitude 🙏</h2><p>Kind hearts like yours make the world softer. 🌼</p>";
-}
+    if (shareBtn) {
+      const container = shareBtn.closest('.love-block-container') || shareBtn.closest('.editable-container');
+      if (!container) return;
+      const contentEl = container.querySelector('.love-content, .editable-content, pre');
+      if (!contentEl) return;
+      const text = contentEl.innerText;
+      const wa = `https://wa.me/?text=${encodeURIComponent(text)}`;
+      window.open(wa, '_blank');
+    }
 
-// 💫 Goodbye
-else if (includes("bye", "goodbye", "see you", "later", "take care")) {
-response = "<h2>💫 Goodbye 💫</h2><p>Until next time — may your days stay warm and your heart stay calm. 💌</p>";
-}
+    if (saveBtn) {
+      // placeholder for save behavior (e.g., localStorage)
+      const container = saveBtn.closest('.editable-container') || saveBtn.closest('.code-block-container');
+      if (!container) return;
+      const contentEl = container.querySelector('.editable-content, .code-content, .love-content, pre');
+      if (!contentEl) return;
+      localStorage.setItem('valantine_saved_' + Date.now(), contentEl.innerText);
+      saveBtn.textContent = '💾 Saved';
+      setTimeout(() => (saveBtn.textContent = '💾 Save'), 1500);
+    }
+  });
 
-// 💫 Default
-else {
-response = "<p>💖 I’m listening with care — tell me more if you’d like. 🌸<br>But remember: keep your heart safe online. 🌿</p>";
-}
-
-return response;
-}
-
-document.addEventListener("click", (e) => {
-if (e.target.id === "copyBtn") {
-const text = e.target.closest(".love-block-container").querySelector(".love-content").innerText;
-navigator.clipboard.writeText(text);
-alert("📋 Copied to clipboard!");
-}
-
-if (e.target.id === "shareBtn") {
-const text = e.target.closest(".love-block-container").querySelector(".love-content").innerText;
-const shareUrl = https://wa.me/?text=${encodeURIComponent(text)};
-window.open(shareUrl, "_blank");
-}
-});
-
-function adjustLayoutForViewport() {
-const viewportWidth = window.innerWidth;
-const viewportHeight = window.innerHeight;
-const isLandscape = viewportWidth > viewportHeight;
-
-if (viewportWidth <= 420) {    
-  sendBtn.style.right = isLandscape ? "50px" : "20px";    
-  inputArea.style.width = "90%";    
-} else if (viewportWidth <= 1024) {    
-  sendBtn.style.right = isLandscape ? "60px" : "30px";    
-  inputArea.style.width = "80%";    
-} else {    
-  sendBtn.style.right = "40px";    
-  inputArea.style.width = "50%";    
-}
-
-}
-
-window.addEventListener("resize", adjustLayoutForViewport);
-adjustLayoutForViewport();
-});
-
-// Sidebar + Avatar Menu
-function toggleAvatarMenu() {
-const menu = document.getElementById("avatarMenu");
-menu.style.display = (menu.style.display === "block") ? "none" : "block";
-}
-
-window.addEventListener("click", function (e) {
-if (!e.target.classList.contains("avatar")) {
-const menu = document.getElementById("avatarMenu");
-if (menu) menu.style.display = "none";
-}
-});
-
-const sidebar = document.getElementById('sidebar');
-const logo = document.getElementById('logs');
-const imgs = document.getElementById('imgs');
-
-if (logo && sidebar && imgs) {
-logo.addEventListener('click', () => sidebar.classList.toggle('open'));
-imgs.addEventListener('click', () => sidebar.classList.remove('open'));
-}
-
-function toggleSidebar() {
-const sidebarEl = document.querySelector('.sidebar');
-sidebarEl.classList.toggle('open');
-}
+  // ---- layout responsiveness ----
+  function adjustLayoutForViewport() {
+    const viewportWidth = window.innerWidth;
+    const isLandscape = window.innerWidth > window.innerHeight;
+    if (viewportWidth <= 420) {
+      sendBtn.style.right = isLandscape ? '50px' : '20px';
+      inputArea.style.width = '90%';
+    } else if (viewportWidth <= 1024) {
+      sendBtn.style.right = isLandscape ? '60px' : '30px';
+      inputArea.style.width = '80%';
+    } else {
+      sendBtn.style.right = '40px';
+      inputArea.style.width = '50%';
+    }
+  }
+}); // DOMContentLoaded
