@@ -151,7 +151,7 @@ async function generateAIResponse(userMessage) {
   }
 
   // 💌 Letter
-else if (includes("letter", "confession", "message to someone", "write to")) {
+else if (includes("love letter", "confession", "message to someone", "write to")) {
   response = `
     <h2>💌 Heartfelt Letter 💌</h2>
     <div class="love-block-container">
