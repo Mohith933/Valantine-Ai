@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Valantine AI — v1 (Creative Writer)</title>
+
+  <!-- Quicksand (Google Fonts) -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #9b1c3c;
+      --accent: #ba174a;
+      --muted: #f2b6c7;
+      --card: rgba(255,255,255,0.04);
+      --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Quicksand", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,var(--bg), #8b1c41);
+      color: #fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:28px;
+      gap:20px;
+    }
+
+    /* Layout container */
+    .app {
+      width:100%;
+      max-width:960px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      overflow:hidden;
+    }
+
+    /* Header */
+    .header {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      font-size:1.25rem;
+    }
+    .brand .heart {
+      background: rgba(255,255,255,0.06);
+      padding:8px;
+      border-radius:10px;
+      font-size:1.05rem;
+    }
+    .header .actions {
+      display:flex;
+      gap:10px;
+    }
+    .btn {
+      background:var(--accent);
+      border:none;
+      color:white;
+      padding:8px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      font-size:0.95rem;
+      transition:transform .12s ease, box-shadow .12s ease;
+    }
+    .btn:hover{ transform:translateY(-3px); box-shadow:0 8px 18px rgba(186,23,74,0.18) }
+
+    /* Main grid */
+    .grid {
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:18px;
+      margin-top:18px;
+    }
+
+    /* Left column: controls + output */
+    .panel {
+      background:var(--card);
+      padding:16px;
+      border-radius:12px;
+      backface-visibility:hidden;
+    }
+
+    label { display:block; margin-bottom:6px; color:#ffdfe6; font-weight:600; font-size:0.9rem; }
+
+    .controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    select, textarea, input[type="range"] {
+      width:100%;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.04);
+      background:transparent;
+      color: #fff;
+      padding:10px;
+      font-size:0.95rem;
+      outline:none;
+    }
+    textarea{ min-height:90px; resize:vertical; }
+
+    .small { width:auto; display:inline-flex; gap:8px; align-items:center; }
+
+    .row { display:flex; gap:10px; margin-top:10px; align-items:center; }
+    .row .btn { padding:10px 14px; }
+
+    /* output */
+    .output {
+      margin-top:14px;
+      background: var(--glass);
+      padding:14px;
+      border-radius:10px;
+      min-height:140px;
+      text-align:left;
+      color: #fffafc;
+      line-height:1.5;
+      font-size:1rem;
+      white-space:pre-wrap;
+    }
+
+    .output h2 { margin:0 0 8px 0; font-size:1.05rem; color:#ffeef3 }
+    .output .meta { font-size:0.85rem; color: #ffdfe6; margin-bottom:8px; }
+
+    .toolbar { display:flex; gap:8px; margin-top:10px; }
+
+    .ghost { background:transparent; border:1px solid rgba(255,255,255,0.06); padding:8px 10px; border-radius:8px; color:#ffdfe6; cursor:pointer; }
+
+    /* History (right column) */
+    .history {
+      background:var(--card);
+      padding:12px;
+      border-radius:12px;
+      max-height:560px;
+      overflow:auto;
+    }
+    .history h3{ margin:0 0 8px 0; color:#ffdfe6 }
+    .hist-item {
+      padding:8px;
+      border-radius:8px;
+      background:transparent;
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:8px;
+      border:1px solid rgba(255,255,255,0.03);
+      cursor:pointer;
+    }
+    .hist-item:hover { background: rgba(255,255,255,0.02) }
+
+    .muted { color:#ffdfe6; opacity:0.9; font-size:0.9rem; }
+
+    /* footer small */
+    .footnote {
+      margin-top:12px;
+      font-size:0.82rem;
+      color:#ffdfe6;
+      opacity:0.9;
+    }
+
+    /* responsive */
+    @media (max-width:880px){
+      .grid{ grid-template-columns: 1fr; }
+      .history{ order:2; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="Valantine AI v1">
+    <div class="header">
+      <div class="brand" aria-hidden="true">
+        <div class="heart">💞</div>
+        <div>
+          <div style="font-size:1.05rem">Valantine AI</div>
+          <div style="font-size:0.78rem; color:#ffdfe6; margin-top:4px">Creative Writer — v1</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="saveAllBtn" title="Save last output">Save</button>
+        <button class="btn" id="copyAllBtn" title="Copy last output">Copy</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Left panel -->
+      <div class="panel" aria-live="polite">
+        <label for="mode">Mode</label>
+        <div class="controls">
+          <select id="mode" aria-label="Choose mode">
+            <option value="poem">Poem</option>
+            <option value="letter">Letter</option>
+            <option value="quote">Quote</option>
+            <option value="resume">Resume (short)</option>
+          </select>
+        </div>
+
+        <label for="prompt" style="margin-top:12px">Prompt (topic / few words)</label>
+        <textarea id="prompt" placeholder="e.g. moonlight love, apology to a friend, product launch"></textarea>
+
+        <div class="row" style="margin-top:12px; align-items:center;">
+          <div style="flex:1">
+            <label for="emotion">Emotion depth</label>
+            <input id="emotion" type="range" min="0" max="100" value="50" />
+            <div class="muted" id="emotionLabel">Balanced</div>
+          </div>
+
+          <div style="width:130px">
+            <label>&nbsp;</label>
+            <button class="btn" id="generateBtn" style="width:100%">Generate</button>
+          </div>
+        </div>
+
+        <div class="output" id="output" tabindex="0" aria-label="Generated output">
+          <div class="meta muted">Your generated content will appear here.</div>
+        </div>
+
+        <div class="toolbar" style="margin-top:8px">
+          <button class="ghost" id="copyBtn">📋 Copy</button>
+          <button class="ghost" id="downloadBtn">⬇ Save .txt</button>
+          <button class="ghost" id="addHistoryBtn">⭐ Add to History</button>
+          <div style="flex:1"></div>
+          <div class="muted" id="lenInfo">0 chars</div>
+        </div>
+
+        <div class="footnote">Tip: Try "poem about rain" or "letter: say sorry to sibling". Emotion slider controls intensity.</div>
+      </div>
+
+      <!-- Right panel: history -->
+      <aside class="history" aria-label="Recent history">
+        <h3>Recent</h3>
+        <div id="historyList">
+          <!-- items inserted via JS -->
+        </div>
+        <div style="margin-top:10px; display:flex; gap:8px">
+          <button class="ghost" id="clearHistory">Clear</button>
+          <div style="flex:1"></div>
+          <div class="muted">Local only • private</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    // Simple Valantine AI v1 — client-side
+    (function () {
+      const modeEl = document.getElementById("mode");
+      const promptEl = document.getElementById("prompt");
+      const emotionEl = document.getElementById("emotion");
+      const emotionLabel = document.getElementById("emotionLabel");
+      const generateBtn = document.getElementById("generateBtn");
+      const outputEl = document.getElementById("output");
+      const copyBtn = document.getElementById("copyBtn");
+      const downloadBtn = document.getElementById("downloadBtn");
+      const addHistoryBtn = document.getElementById("addHistoryBtn");
+      const historyList = document.getElementById("historyList");
+      const clearHistoryBtn = document.getElementById("clearHistory");
+      const lenInfo = document.getElementById("lenInfo");
+      const saveAllBtn = document.getElementById("saveAllBtn");
+      const copyAllBtn = document.getElementById("copyAllBtn");
+
+      // local storage key
+      const STORAGE_KEY = "valantine_v1_history";
+
+      // helpers
+      function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+      function nowTs(){ return new Date().toISOString(); }
+
+      // emotion label update
+      function updateEmotionLabel() {
+        const v = parseInt(emotionEl.value,10);
+        if (v < 25) emotionLabel.textContent = "Soft";
+        else if (v < 60) emotionLabel.textContent = "Balanced";
+        else emotionLabel.textContent = "Deep";
+      }
+      emotionEl.addEventListener("input", updateEmotionLabel);
+      updateEmotionLabel();
+
+      // typing effect for output (keeps HTML safe)
+      async function typeOut(html, speed = 16) {
+        // simple "type" of plain text extracted from html to preserve final markup
+        const tmp = document.createElement("div");
+        tmp.innerHTML = html;
+        const text = tmp.innerText;
+        outputEl.innerHTML = ""; // clear
+        let i=0;
+        while(i < text.length){
+          outputEl.textContent = text.substring(0, i+1);
+          i++;
+          outputEl.scrollIntoView({behavior:"smooth", block:"end"});
+          await new Promise(r=>setTimeout(r, speed));
+        }
+        // finally set full HTML (so headings / bold appear if present)
+        outputEl.innerHTML = html;
+        lenInfo.textContent = `${outputEl.innerText.length} chars`;
+      }
+
+      // small content generator — rule-based templates with prompt + emotion influence
+      function generateContent(prompt, mode, emotion) {
+        prompt = (prompt||"").trim();
+        const mood = clamp(parseInt(emotion,10),0,100);
+        const intensity = mood / 100; // 0..1
+
+        // helper to tone words based on intensity
+        function tone(baseSoft, baseBalanced, baseDeep) {
+          if (intensity < 0.25) return baseSoft;
+          if (intensity < 0.6) return baseBalanced;
+          return baseDeep;
+        }
+
+        // create a short descriptor from prompt
+        const topic = prompt || "a gentle idea";
+        const topicPhrase = prompt ? `"${prompt}"` : "your thought";
+
+        // Mode-based generation
+        if (mode === "poem") {
+          const line1 = `Under the hush of ${topic}, I whisper ${tone("softly","in wonder","with fire")}.`;
+          const line2 = `Your name — a lantern thrown across a cold sky, ${tone("glows","shimmers","blazes")}.`;
+          const line3 = `We stitch the hours with breath and song; ${tone("a tender hush","a smiling memory","a fervent vow")}.`;
+          const closer = `— For ${topicPhrase}, with all my small heart.`;
+          return `<h2>🌺 Poem</h2>\n<p>${line1}\n<br>${line2}\n<br>${line3}\n<br><strong>${closer}</strong></p>`;
+        }
+
+        if (mode === "letter") {
+          const opener = `Dear friend,`;
+          const body = tone(
+            `I hope this note finds you warm and calm. I've been thinking of ${topic}, and wanted to reach out with a soft hello.`,
+            `I hope you're well. Lately I've been reflecting on ${topic} and I felt compelled to share some honest thoughts.`,
+            `I must say plainly — ${topic} has been on my mind, and it wakes something fierce inside me.`
+          );
+          const closer = tone(
+            `With gentle regards,\nValantine`,
+            `Warmly,\nValantine`,
+            `Always yours,\nValantine`
+          );
+          return `<h2>💌 Letter</h2>\n<pre style="white-space:pre-wrap">${opener}\n\n${body}\n\n${closer}</pre>`;
+        }
+
+        if (mode === "quote") {
+          const quote = tone(
+            `Softness reveals what force cannot — love whispers truth.`,
+            `How we hold each other shapes how we become.`,
+            `Burn boldly; the quiet soul wins by relentlessness of heart.`
+          );
+          return `<h2>✨ Quote</h2>\n<p>“${quote}”<br><em>— about ${topic}</em></p>`;
+        }
+
+        if (mode === "resume") {
+          // simple short resume/project snippet
+          const title = prompt || "Your Project / Role";
+          const objective = tone(
+            `A thoughtful contributor focused on steady improvement.`,
+            `A pragmatic creator who shapes ideas into working outcomes.`,
+            `A driven founder pushing bold experiments to real impact.`
+          );
+          const tech = `Technologies: HTML, CSS, JavaScript, (add others)`;
+          return `<h2>📘 Resume / Project</h2>\n<pre style="white-space:pre-wrap"><strong>${title}</strong>\n\nObjective:\n${objective}\n\n${tech}\n\nOutcome:\nDelivered a first version and received user feedback.</pre>`;
+        }
+
+        // fallback
+        return `<p>💬 I’m here to help — try selecting a mode and writing a short prompt.</p>`;
+      }
+
+      // Generate button handler
+      generateBtn.addEventListener("click", async () => {
+        const prompt = promptEl.value.trim();
+        const mode = modeEl.value;
+        const emotion = emotionEl.value;
+
+        // small UX guard
+        generateBtn.disabled = true;
+        generateBtn.textContent = "Creating...";
+        const content = generateContent(prompt, mode, emotion);
+
+        // type out the content
+        await typeOut(content, 14);
+
+        generateBtn.disabled = false;
+        generateBtn.textContent = "Generate";
+
+        // auto-add short preview to history (not saved until user presses Add)
+        // but we update len and button states
+      });
+
+      // Copy output
+      copyBtn.addEventListener("click", async () => {
+        const text = outputEl.innerText.trim();
+        if (!text) { alert("Nothing to copy."); return; }
+        try {
+          await navigator.clipboard.writeText(text);
+          copyBtn.textContent = "✅ Copied";
+          setTimeout(()=>copyBtn.textContent = "📋 Copy",1400);
+        } catch(e){
+          alert("Copy failed — your browser may block clipboard access.");
+        }
+      });
+
+      // Download .txt
+      downloadBtn.addEventListener("click", () => {
+        const txt = outputEl.innerText.trim();
+        if (!txt) { alert("Nothing to save."); return; }
+        const blob = new Blob([txt], {type:"text/plain;charset=utf-8"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "valantine_output.txt";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      });
+
+      // Save / Copy top header buttons
+      copyAllBtn.addEventListener("click", async () => {
+        const t = outputEl.innerText.trim();
+        if (!t) return alert("No content to copy.");
+        try { await navigator.clipboard.writeText(t); alert("Copied!"); } catch { alert("Copy failed."); }
+      });
+      saveAllBtn.addEventListener("click", () => {
+        const txt = outputEl.innerText.trim();
+        if (!txt) return alert("No content to save.");
+        const blob = new Blob([txt], {type:"text/plain;charset=utf-8"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "valantine_saved.txt";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      });
+
+      // History management
+      function loadHistory() {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        let arr = [];
+        try { arr = raw ? JSON.parse(raw) : []; } catch(e){ arr = []; }
+        historyList.innerHTML = "";
+        if (!arr.length) {
+          historyList.innerHTML = `<div class="muted">No saved entries yet. Generate and "Add to History".</div>`;
+          return;
+        }
+        arr.forEach((it, idx) => {
+          const div = document.createElement("div");
+          div.className = "hist-item";
+          div.innerHTML = `<div style="flex:1"><strong style="display:block">${it.mode.toUpperCase()}</strong><div style="font-size:0.9rem;color:#ffdfe6;margin-top:6px">${it.preview}</div></div>
+                           <div style="min-width:72px;display:flex;flex-direction:column;gap:6px">
+                             <button class="ghost" data-idx="${idx}" data-action="open">Open</button>
+                             <button class="ghost" data-idx="${idx}" data-action="delete">Delete</button>
+                           </div>`;
+          historyList.appendChild(div);
+        });
+      }
+
+      // Add to history (stores HTML + meta)
+      addHistoryBtn.addEventListener("click", () => {
+        const text = outputEl.innerText.trim();
+        if (!text) { alert("Nothing to add."); return; }
+        const mode = modeEl.value;
+        const preview = text.length > 90 ? text.slice(0,90) + "…" : text;
+        const raw = localStorage.getItem(STORAGE_KEY);
+        let arr = raw ? JSON.parse(raw) : [];
+        arr.unshift({ ts: nowTs(), mode, preview, text });
+        // keep 60 entries max
+        if (arr.length > 60) arr = arr.slice(0,60);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+        loadHistory();
+        addHistoryBtn.textContent = "Saved ✓";
+        setTimeout(()=> addHistoryBtn.textContent = "⭐ Add to History",1200);
+      });
+
+      // History click handling (delegation)
+      historyList.addEventListener("click", (ev) => {
+        const btn = ev.target.closest("button[data-action]");
+        if (!btn) return;
+        const idx = parseInt(btn.dataset.idx,10);
+        const action = btn.dataset.action;
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        if (action === "open") {
+          const it = arr[idx];
+          if (!it) return;
+          // open in output area
+          outputEl.innerText = it.text;
+          lenInfo.textContent = `${it.text.length} chars`;
+          // set mode to the saved mode
+          if (it.mode) modeEl.value = it.mode;
+        } else if (action === "delete") {
+          if (!confirm("Delete this saved entry?")) return;
+          arr.splice(idx,1);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+          loadHistory();
+        }
+      });
+
+      clearHistoryBtn.addEventListener("click", () => {
+        if (!confirm("Clear all saved history?")) return;
+        localStorage.removeItem(STORAGE_KEY);
+        loadHistory();
+      });
+
+      // initialize
+      loadHistory();
+
+      // small accessibility: allow Enter on prompt to generate when focused + ctrl
+      promptEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+          e.preventDefault();
+          generateBtn.click();
+        }
+      });
+
+    })();
+  </script>
+</body>
+</html>
