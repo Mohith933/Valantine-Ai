@@ -10,7 +10,7 @@
    }
    body {
   background: linear-gradient(135deg, #2b0015, #3a0a20, #5a0032);
-color: #ffb6c1;;
+color: #ffb6c1;
   display: flex;
   flex-direction: column;
   align-items: center;
