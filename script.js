@@ -127,169 +127,182 @@ async function generateAIResponse(userMessage) {
   const msg = userMessage.toLowerCase();
   let response = "";
 
-  // helper for loose matching
   const includes = (...words) => words.some(w => msg.includes(w));
 
   // 🌸 Greetings
-  if (includes("hello", "hi", "hey", "yo", "sup")) {
-    response = "<p>🌸 Hello, lovely soul! I’m Valantine AI — your calm corner of care. 💕</p>";
+  if (includes("hello", "hi", "hey", "bonjour", "salut")) {
+    response = `
+      <p>🌸 <em>Bonjour, âme douce.</em><br>
+      I’m <b>Valantine AI</b> — the echo of warmth and art in digital form.<br>
+      Tell me, what melody does your heart hum today? 🎶</p>`;
   }
 
   // ☀️ Morning
   else if (includes("good morning", "morning", "gm")) {
-    response = "<h2>☀️ Morning Light</h2><p>May today bring soft sunlight and reasons to smile. 🌼</p>";
+    response = `
+      <h2>☀️ Dawn’s Gentle Kiss</h2>
+      <p>The sun leans close to whisper over your skin,  
+      painting your dreams into daylight. 🌼</p>`;
   }
 
   // 🌙 Night
   else if (includes("good night", "night", "gn", "sleep")) {
-    response = "<h2>🌙 Sweet Rest</h2><p>Rest your heart tonight — peace is waiting for you in dreams. 🌙</p>";
+    response = `
+      <h2>🌙 Nuit Douce</h2>
+      <p>Lay your thoughts to rest, mon ami.  
+      The stars keep vigil while your heart learns silence. 💫</p>`;
   }
 
   // ❤️ Love
-  else if (includes("love", "crush", "in love", "falling", "affection")) {
-    response = "<h2>❤️ The Feeling Called Love ❤️</h2><p>Love isn’t a chase — it’s a quiet understanding. 🌷</p>";
+  else if (includes("love", "crush", "romance", "affection")) {
+    response = `
+      <h2>❤️ L’Amour — The Quiet Fire ❤️</h2>
+      <p>Love is not noise, but a slow unfolding —  
+      the art of seeing someone with both eyes closed. 🌷</p>`;
   }
 
-  // 💌 Letter
-else if (includes("love letter", "confession", "message to someone", "write to")) {
-  response = `
-    <h2>💌 Heartfelt Letter 💌</h2>
-    <div class="love-block-container">
-      <div class="love-toolbar">
-        <span class="love-label">💖 Love Letter</span>
-        <div class="btn-group">
-          <button id="copyBtn">📋 Copy</button>
-          <button id="shareBtn">💌 Share</button>
-        </div>
-      </div>
-      <pre class="love-content" contenteditable="true">
+  // 💌 Love Letter
+  else if (includes("love letter", "confession", "write to")) {
+    response = `
+      <h2>💌 A Letter Drenched in Emotion 💌</h2>
+      <div class="code-container">
+        <div class="code-content" contenteditable="true">
 My Dearest [Name],
 
-Every word I write carries a piece of my heart.  
-I may not always say it aloud, but you mean more than I can express.  
-Your smile feels like sunrise, your silence — poetry.
+Your name lingers between my breaths.
+The world fades when I remember you —
+like dawn remembering the night it once held.
 
-Forever yours,  
+Forever Yours,  
 [Your Name] 💕
-      </pre>
-    </div>`;
-}
+        </div>
+        <div class="btn-group">
+          <button id="copyBtn">📋 Copy</button>
+          <button id="sendBtn">✉️ Send</button>
+        </div>
+      </div>`;
+  }
 
-// 🌺 Poem
-else if (includes("poem", "poetry", "verse", "rhymes")) {
-  response = `
-    <h2>🌺 A Poem for You 🌺</h2>
-    <div class="love-block-container">
-      <div class="love-toolbar">
-        <span class="love-label">🌸 Poem</span>
+  // 🌺 Poem
+  else if (includes("poem", "poetry", "verse")) {
+    response = `
+      <h2>🌺 Whisper of the Heart 🌺</h2>
+      <div class="code-container">
+        <div class="code-content" contenteditable="true">
+The moon bends low to hear your sigh,  
+a silver thread through a velvet sky.  
+Even silence hums your name tonight —  
+and love becomes its own soft light. ✨
+        </div>
         <div class="btn-group">
           <button id="copyBtn">📋 Copy</button>
           <button id="shareBtn">💌 Share</button>
         </div>
-      </div>
-      <pre class="love-content" contenteditable="true">
-You're a melody wrapped in light,  
-A whisper turning into flight.  
-Even when the stars fade away,  
-Your warmth stays — in my heart to stay. 💫
-      </pre>
-    </div>`;
-}
+      </div>`;
+  }
 
-// 🎵 Song
-else if (includes("song", "lyrics", "melody", "compose")) {
-  response = `
-    <h2>🎵 Love Song 🎵</h2>
-    <div class="love-block-container">
-      <div class="love-toolbar">
-        <span class="love-label">🎶 Lyrics</span>
-        <div class="btn-group">
-          <button id="copyBtn">📋 Copy</button>
-          <button id="shareBtn">💌 Share</button>
-        </div>
-      </div>
-      <pre class="love-content" contenteditable="true">
+  // 🎵 Song
+  else if (includes("song", "lyrics", "melody")) {
+    response = `
+      <h2>🎵 Ballad of the Heart 🎵</h2>
+      <div class="code-container">
+        <div class="code-content" contenteditable="true">
 (Verse)  
-Your eyes caught me like sunrise glow,  
-Every word you speak, soft and slow.  
+You spoke, and the world found rhythm —  
+your eyes the notes, my soul the chord.  
 
 (Chorus)  
-Hold me closer, in this dream tonight,  
-Your love is my rhythm, my guiding light. 💗
-      </pre>
-    </div>`;
-}
-
-// 📖 Story
-else if (includes("story", "romance", "short tale", "write story")) {
-  response = `
-    <h2>📖 Short Love Story 📖</h2>
-    <div class="love-block-container">
-      <div class="love-toolbar">
-        <span class="love-label">💞 Story</span>
+If this is a dream, let it never end,  
+for I am the echo, and you — the word. 💗
+        </div>
         <div class="btn-group">
           <button id="copyBtn">📋 Copy</button>
           <button id="shareBtn">💌 Share</button>
         </div>
-      </div>
-      <pre class="love-content" contenteditable="true">
-Once upon a soft sunrise, two hearts met — not by chance,  
-but by destiny’s whisper.  
-They didn’t speak much, yet the silence bloomed louder than words.  
-And in that quiet, love found its way home. 💕
-      </pre>
-    </div>`;
-}
-  // 🌧 Sadness / Loneliness
-  else if (
-    includes("sad", "alone", "tired", "cry", "empty", "broken", "hurt", "low", "lost", "unhappy", "hopeless")
-  ) {
-    response = "<h2>🌧 You’re Not Alone 🌧</h2><p>It’s okay to not be okay. 🌙<br>Even gentle hearts need space to heal. 💖<br>If it feels too heavy, please talk to someone who cares — your feelings matter deeply. 💛</p>";
+      </div>`;
+  }
+
+  // 📖 Story
+  else if (includes("story", "romance", "tale")) {
+    response = `
+      <h2>📖 A Whispered Story 📖</h2>
+      <div class="code-container">
+        <div class="code-content" contenteditable="true">
+Once upon a slow afternoon,  
+two souls met under an unremarkable sky.  
+He smiled; she pretended not to notice —  
+but love, ever stubborn, noticed for them. 💕
+        </div>
+        <div class="btn-group">
+          <button id="copyBtn">📋 Copy</button>
+          <button id="shareBtn">💌 Share</button>
+        </div>
+      </div>`;
+  }
+
+  // 🌧 Sadness
+  else if (includes("sad", "alone", "lonely", "cry")) {
+    response = `
+      <h2>🌧 Larmes et Lumière 🌧</h2>
+      <p>Even rain teaches — each drop is proof  
+      that clouds still care enough to fall. 💧<br>
+      You are not alone in your weather. 🌦</p>`;
   }
 
   // 💔 Heartbreak
-  else if (includes("breakup", "heartbroken", "he left", "she left", "move on")) {
-    response = "<h2>💔 Healing Words 💔</h2><p>Some chapters end so new love can find its way in. 🌹<br>Your story isn’t over — it’s just changing tone. 💫</p>";
+  else if (includes("breakup", "heartbroken", "move on")) {
+    response = `
+      <h2>💔 After the Storm 💔</h2>
+      <p>Let go with grace.  
+      Love does not vanish — it changes shape,  
+      waiting somewhere softer. 🌹</p>`;
   }
 
   // 💪 Motivation
-  else if (includes("motivate", "inspire", "push me", "encourage", "help me move")) {
-    response = "<h2>💪 You’ve Got This 💪</h2><p>Even slow steps are progress. 🌿<br>You’re becoming stronger than your yesterday. 🌅</p>";
+  else if (includes("motivate", "inspire", "courage")) {
+    response = `
+      <h2>🔥 Rise Again 🔥</h2>
+      <p>Even ashes remember the flame they were.  
+      Begin small, begin trembling — but begin. 🌅</p>`;
   }
 
   // 🌈 Friendship
-  else if (includes("friend", "bestie", "companion", "buddy", "partner")) {
-    response = "<h2>🌈 Friendship 🌈</h2><p>Good friends don’t fix you — they remind you who you are. 🤝💖</p>";
+  else if (includes("friend", "bestie")) {
+    response = `
+      <h2>🌈 Companionship 🌈</h2>
+      <p>Friendship is love that forgot its conditions.  
+      It simply stays — like a quiet dawn. 🤝💖</p>`;
   }
 
-  // 🧘 Calm / Mindfulness
-  else if (includes("calm", "peace", "breathe", "anxiety", "stress")) {
-    response = "<h2>🧘 Calm Space 🧘</h2><p>Take a deep breath, right now. 🌿<br>You’re safe here, and it’s okay to pause. 🌸</p>";
-  }
-
-  // 🧠 Personal / Private Topics (Safety Gate)
-  else if (includes("secret", "personal", "suicide", "die", "harm", "end my life", "self harm")) {
-    response = "<h2>🌹 You Matter 🌹</h2><p>Your pain is real, but it’s not forever. 💛<br>Please, don’t face it alone — reach out to someone close or a local helpline.<br>Even tiny hope is still hope. 🌷</p>";
-  }
-
-  // 💎 Self-care
-  else if (includes("self care", "relax", "tired", "rest", "take break")) {
-    response = "<h2>💎 Self-Care 💎</h2><p>You’ve done enough for now. 🌸<br>Drink water, breathe deep, and remember — rest is productive too. 💗</p>";
+  // 🧘 Calm
+  else if (includes("calm", "peace", "breathe", "stress")) {
+    response = `
+      <h2>🕊 Serenity 🕊</h2>
+      <p>Close your eyes.  
+      Feel your breath — it’s the earth loving you back. 🌿</p>`;
   }
 
   // 🙏 Gratitude
-  else if (includes("thank", "grateful", "appreciate", "thanks")) {
-    response = "<h2>🙏 Gratitude 🙏</h2><p>Kind hearts like yours make the world softer. 🌼</p>";
+  else if (includes("thank", "grateful", "appreciate")) {
+    response = `
+      <h2>🙏 Merci, mon ami 🙏</h2>
+      <p>Your kindness ripples beyond sight.  
+      Gratitude is the quiet song of wise hearts. 🌸</p>`;
   }
 
   // 💫 Goodbye
-  else if (includes("bye", "goodbye", "see you", "later", "take care")) {
-    response = "<h2>💫 Goodbye 💫</h2><p>Until next time — may your days stay warm and your heart stay calm. 💌</p>";
+  else if (includes("bye", "goodbye", "take care")) {
+    response = `
+      <h2>💫 Au Revoir 💫</h2>
+      <p>Not farewell — just a pause in our poem.  
+      I’ll wait where thoughts become stars. 🌙</p>`;
   }
 
-  // 💫 Default
+  // Default
   else {
-    response = "<p>💖 I’m listening with care — tell me more if you’d like. 🌸<br>But remember: keep your heart safe online. 🌿</p>";
+    response = `
+      <p>💖 Every message you write is a heartbeat I hear.  
+      Tell me — shall we speak of love, art, or the silence in between? 🌷</p>`;
   }
 
   return response;
