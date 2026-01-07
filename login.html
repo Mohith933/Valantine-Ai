@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valatine Ai - Login</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+    }
+    body {
+      background: #8b1c41;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: white;
+    }
+
+    /* ===== DARK MODE ===== */
+body.dark {
+  background: #0f172a !important;
+  color: #e5e7eb;
+}
+
+body.dark .settings-card {
+  background: linear-gradient(135deg, #1f2933, #0f172a);
+}
+
+body.dark button {
+  background: #334155;
+}
+
+body.dark button:hover {
+  background: #475569;
+}
+
+
+    /* Navbar */
+    .navbar {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .navbar span {
+      color: #fff;
+    }
+
+    /* Login Box */
+    .login-box {
+      background: linear-gradient(135deg, #c1275b, #8b1c41);
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
+      width: 420px;
+      text-align: center;
+    }
+    .login-box h2 {
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    .login-box label {
+      display: block;
+      text-align: left;
+      margin: 10px 0 5px;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      background: transparent;
+      color: white;
+      border-radius: 10px;
+      border: 1px solid #F8312F;
+      outline: none;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+    .login-box input:focus {
+      border-color: #ff9eb5;
+      box-shadow: 0px 0px 8px rgba(255, 90, 117, 0.8);
+    }
+    .login-box button {
+      background: #BA174A;
+      border: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .login-box button:hover {
+      background: #ff2e54;
+      transform: scale(1.05);
+    }
+    @media(max-width:768px){
+      .login-box {
+        width: 320px;
+        padding: 30px 20px;
+      }
+      .login-box h2 {
+        font-size: 2rem;
+      }
+      .login-box label {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    ❤️ <span>Valatine Ai</span>
+  </div>
+
+  <!-- Login Form -->
+  <div class="login-box">
+    <h2>Login</h2>
+    <form id="loginForm" action="dashboard.html">
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter password" required>
+
+      <button type="submit">Login ❤️</button>
+    </form>
+  </div>
+
+<script>
+  const loginForm = document.getElementById("loginForm");
+
+  loginForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const savedUser = JSON.parse(localStorage.getItem("valentineUser"));
+
+    if (!savedUser) {
+      alert("No account found. Please signup first ❌");
+      return;
+    }
+
+    if (email === savedUser.email && password === savedUser.password) {
+      alert(`Welcome back, ${savedUser.username} ❤️`);
+      window.location.href = "dashboard.html";
+    } else {
+      alert("Invalid email or password ❌");
+    }
+  });
+</script>
+
+
+</body>
+</html>

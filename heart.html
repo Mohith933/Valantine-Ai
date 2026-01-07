@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Valentine AI — Live Voice</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: radial-gradient(circle at top, #8b1c41, #3a0d1f);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .voice-card {
+      width: 340px;
+      padding: 40px 30px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #c1275b, #8b1c41);
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    .voice-card h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .status {
+      font-size: 0.95rem;
+      opacity: 0.85;
+      margin-bottom: 30px;
+    }
+
+    .mic-btn {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: none;
+      background: #ff2e54;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 0 0 rgba(255,46,84,0.6);
+    }
+
+    .mic-btn.listening {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,46,84,0.6); }
+      70% { box-shadow: 0 0 0 20px rgba(255,46,84,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,46,84,0); }
+    }
+
+    .hint {
+      margin-top: 25px;
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="voice-card">
+    <h1>❤️ Valentine AI</h1>
+    <p class="status" id="statusText">Tap the mic and speak</p>
+
+    <button class="mic-btn" id="micBtn">🎤</button>
+
+    <p class="hint">Frontend voice demo · Rule-based</p>
+  </div>
+
+<script>
+  const micBtn = document.getElementById("micBtn");
+  const statusText = document.getElementById("statusText");
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = "en-US";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  micBtn.addEventListener("click", () => {
+    recognition.start();
+    micBtn.classList.add("listening");
+    statusText.textContent = "Listening… speak now";
+  });
+
+  recognition.onresult = (event) => {
+    const text = event.results[0][0].transcript.toLowerCase();
+    micBtn.classList.remove("listening");
+    statusText.textContent = "Responding…";
+
+    const reply = getResponse(text);
+    speak(reply);
+  };
+
+  recognition.onerror = () => {
+    micBtn.classList.remove("listening");
+    statusText.textContent = "Could not hear you. Try again.";
+  };
+
+  function speak(message) {
+    const utterance = new SpeechSynthesisUtterance(message);
+    utterance.rate = 0.95;
+    utterance.pitch = 1.05;
+
+    utterance.onend = () => {
+      statusText.textContent = "Tap the mic and speak";
+    };
+
+    speechSynthesis.speak(utterance);
+  }
+
+  // === RULE BASED RESPONSES ===
+  function getResponse(text) {
+    if (text.includes("hello") || text.includes("hi")) {
+      return "Hello. I am here with you.";
+    }
+    if (text.includes("sad") || text.includes("tired")) {
+      return "I am sorry you feel that way. Take a slow breath with me.";
+    }
+    if (text.includes("love")) {
+      return "Love is gentle. You deserve kindness.";
+    }
+    if (text.includes("bye") || text.includes("stop")) {
+      return "I will stay quiet now. Take care.";
+    }
+    return "I am listening. Please continue.";
+  }
+</script>
+
+</body>
+</html>

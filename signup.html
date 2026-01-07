@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valatine Ai - Signup</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+    }
+    body {
+      background: #8b1c41;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: white;
+    }
+
+    /* ===== DARK MODE ===== */
+body.dark {
+  background: #0f172a !important;
+  color: #e5e7eb;
+}
+
+body.dark .settings-card {
+  background: linear-gradient(135deg, #1f2933, #0f172a);
+}
+
+body.dark button {
+  background: #334155;
+}
+
+body.dark button:hover {
+  background: #475569;
+}
+
+
+    /* Navbar */
+    .navbar {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .navbar span {
+      color: #fff;
+    }
+
+    /* Signup Box */
+    .signup-box {
+      background: linear-gradient(135deg, #c1275b, #8b1c41);
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
+      width: 420px;
+      text-align: center;
+    }
+    .signup-box h2 {
+      margin-bottom: 20px;
+      font-size: 3rem;
+      font-weight: 700;
+    }
+    .signup-box label {
+      display: block;
+      text-align: left;
+      margin: 10px 0 5px;
+      font-weight: 600;
+      font-size: 1.3rem;
+    }
+    .signup-box input {
+      width: 100%;
+      padding: 10px;
+      background:transparent;
+      color:white;
+      border-radius: 10px;
+      border: 1px solid #F8312F;
+      outline: none;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+    .signup-box input:focus {
+      border-color: #ff9eb5;
+      box-shadow: 0px 0px 8px rgba(255, 90, 117, 0.8);
+    }
+    .signup-box button {
+      background: #BA174A;
+      border: none;
+      margin-top:20px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .signup-box button:hover {
+      background: #ff2e54;
+      transform: scale(1.05);
+    }
+    @media(max-width:768px){
+        /* Signup Box */
+    .signup-box {
+      background: linear-gradient(135deg, #c1275b, #8b1c41);
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
+      width: 320px;
+      text-align: center;
+    }
+    .signup-box h2 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .signup-box label {
+      display: block;
+      text-align: left;
+      margin: 10px 0 5px;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    ❤️ <span>Valatine Ai</span>
+  </div>
+
+  <!-- Signup Form -->
+  <div class="signup-box">
+    <h2>Sign up</h2>
+    <form id="signupForm" action="login.html">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="Enter your name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter password" required>
+
+      <label for="mobile">Mobile No</label>
+      <input type="tel" id="mobile" placeholder="Enter mobile number" required>
+
+      <button type="submit">Signup ❤️</button>
+    </form>
+  </div>
+
+  <script>
+  const signupForm = document.getElementById("signupForm");
+
+  signupForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const user = {
+      username: document.getElementById("username").value,
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value,
+      mobile: document.getElementById("mobile").value
+    };
+
+    if (user.username && user.email && user.password && user.mobile) {
+      localStorage.setItem("valentineUser", JSON.stringify(user));
+      alert(`Welcome ${user.username}! ❤️`);
+      window.location.href = "login.html";
+    } else {
+      alert("Please fill all fields ❌");
+    }
+  });
+</script>
+
+
+</body>
+</html>
