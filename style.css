@@ -884,6 +884,55 @@ h3 {
 
 }
 
+.heart-wrapper {
+  text-align: center;
+  padding: 16px;
+}
+
+.sketch-symbol {
+  fill: none;
+  stroke: #c9184a;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.9;
+}
+
+.sketch-symbol path,
+.sketch-symbol circle {
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  animation: draw-line 2.2s ease-out forwards;
+}
+
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* soft breathing effect */
+.sketch-symbol {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+.sketch-symbol path {
+  animation-duration: 3.5s;
+}
+
+
+
 /* Smooth hover transitions for all buttons and links */
 button,
 .btn,
