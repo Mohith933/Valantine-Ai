@@ -141,7 +141,6 @@ function typeText(element, htmlContent, speed = 20) {
   setTimeout(typeNext, 250);
 }
 
-
   // floating heart effect (simple)
   function showFloatingHeart() {
     const el = document.createElement('div');
@@ -175,28 +174,24 @@ function typeText(element, htmlContent, speed = 20) {
     return arr.some(w => msg.includes(w));
   }
 
+ 
+
   // ---- AI response logic (valid template strings only) ----
   async function generateAIResponse(userMessage) {
     const msg = userMessage.toLowerCase().trim();
-
     // helper
     const includes = (...words) => includesAny(msg, words);
-
-
     // responses (strings of HTML)
     if (includes('hello', 'hi', 'hey', 'yo', 'sup')) {
       return `<p>🌸 Hello, lovely soul! I’m <strong>Valantine AI</strong> — your calm corner of care. 💕</p>`;
     }
-
     if (includes('good morning', 'morning', 'gm')) {
       return `<h2>☀️ Morning Light</h2><p>May today bring soft sunlight and reasons to smile. 🌼</p>`;
     }
-
     if (includes('good night', 'night', 'gn', 'sleep')) {
       return `<h2>🌙 Sweet Rest</h2><p>Rest your heart tonight — peace is waiting for you in dreams. 🌙</p>`;
     }
-
-    if (includes('love', 'crush', 'confession')) {
+    if (includes('letter', 'crush', 'confession')) {
       return `
         <h2>💌 Heartfelt Letter</h2>
         <div class="love-block-container">
@@ -219,7 +214,6 @@ Forever yours,
           </pre>
         </div>`;
     }
-
     if (includes('poem', 'poetry', 'write poem', 'romantic poem')) {
   return `
   <h2>🌸 Poetry from the Heart 🌸</h2>
@@ -253,8 +247,6 @@ even if you’ve never been there before.” 🌷
     </pre>
   </div>`;
 }
-
-
     if (includes('song', 'lyrics', 'melody', 'compose')) {
       return `
         <h2>🎵 Love Song 🎵</h2>
@@ -277,7 +269,6 @@ Your love is my rhythm, my guiding light. 💗
           </pre>
         </div>`;
     }
-
     if (includes('story', 'love story', 'short story')) {
   return `
   <h2>📖 A Soft Love Story</h2>
@@ -292,7 +283,6 @@ and somehow, that was everything. 💕
     </pre>
   </div>`;
 }
-
 if (includes('affirmation', 'positive', 'healing', 'self love')) {
   return `
   <h2>🌷 Daily Affirmations</h2>
@@ -304,7 +294,7 @@ if (includes('affirmation', 'positive', 'healing', 'self love')) {
   </ul>`;
 }
 
-if (includes('love table', 'relationship table', 'feelings table')) {
+if (includes('table', 'relationship table', 'feelings table')) {
   return `
   <h2>💗 Love Feelings Table</h2>
   <table class="love-table">
@@ -330,8 +320,128 @@ if (includes('love table', 'relationship table', 'feelings table')) {
     </tr>
   </table>`;
 }
+if (
+  includes("love","heart","valantine")
+) {
+  return `
+      <div class="love-block-container">
+      <div class="love-toolbar">
+        <span class="love-label">❤️ From the Heart</span>
+        <div class="btn-group">
+          <button class="copy-btn">📋 Copy</button>
+          <button class="share-btn">💌 Share</button>
+        </div>
+      </div>
 
+      <div class="love-content heart-wrapper">
+        <svg width="160" height="140" viewBox="0 0 24 24" class="sketch-symbol">
+          <path d="
+            M12 21
+            C10 19, 4 14, 4 9
+            C4 6, 6 4, 9 4
+            C11 4, 12 6, 12 6
+            C12 6, 13 4, 15 4
+            C18 4, 20 6, 20 9
+            C20 14, 14 19, 12 21
+          " />
+        </svg>
 
+        <p class="heart-text">Some feelings don’t need words.</p>
+      </div>
+    </div>
+  `;
+}
+
+if (
+  includes("care", "gentle", "bloom", "grow", "comfort")
+) {
+  return `
+      <div class="love-block-container">
+      <div class="love-toolbar">
+        <span class="love-label">🌸 From the Flower</span>
+        <div class="btn-group">
+          <button class="copy-btn">📋 Copy</button>
+          <button class="share-btn">💌 Share</button>
+        </div>
+      </div>
+
+      <div class="love-content heart-wrapper">
+        <svg width="160" height="140" viewBox="0 0 24 24" class="sketch-symbol">
+  <path d="M12 12
+           C10 10, 7 10, 6 12
+           C5 14, 7 16, 9 15
+           C10 18, 14 18, 15 15
+           C17 16, 19 14, 18 12
+           C17 10, 14 10, 12 12Z"/>
+  <circle cx="12" cy="12" r="1.5"/>
+  <path d="M12 14 L12 20"/>
+</svg>
+
+        <p class="heart-text">Some feelings don’t need words.</p>
+      </div>
+    </div>
+  `;
+}
+if (
+  includes("hope", "proud", "shine", "admire", "light")
+) {
+  return `
+      <div class="love-block-container">
+      <div class="love-toolbar">
+        <span class="love-label">⭐ From the Star</span>
+        <div class="btn-group">
+          <button class="copy-btn">📋 Copy</button>
+          <button class="share-btn">💌 Share</button>
+        </div>
+      </div>
+
+      <div class="love-content heart-wrapper">
+        <svg width="160" height="140" viewBox="0 0 24 24" class="sketch-symbol">
+  <path d="M12 3
+           L14.8 9
+           L21 9.3
+           L16 13.3
+           L17.5 20
+           L12 16.5
+           L6.5 20
+           L8 13.3
+           L3 9.3
+           L9.2 9Z"/>
+</svg>
+
+        <p class="heart-text">Some feelings don’t need words.</p>
+      </div>
+    </div>
+  `;
+}
+if (
+  includes("moon")
+) {
+  return `
+      <div class="love-block-container">
+      <div class="love-toolbar">
+        <span class="love-label">🌙 From the Moon</span>
+        <div class="btn-group">
+          <button class="copy-btn">📋 Copy</button>
+          <button class="share-btn">💌 Share</button>
+        </div>
+      </div>
+
+      <div class="love-content heart-wrapper">
+       <svg width="160" height="140" viewBox="0 0 24 24" class="sketch-symbol">
+  <path d="
+    M15 3
+    C10 4, 8 9, 9 13
+    C10 17, 14 20, 18 19
+    C14 22, 7 20, 5 14
+    C3 8, 8 3, 15 3Z"/>
+</svg>
+
+        <p class="heart-text">Some feelings don’t need words.</p>
+      </div>
+    </div>
+  `;
+}
     if (includes('sad', 'alone', 'tired', 'cry', 'empty', 'broken', 'hurt', 'low', 'lost')) {
       return `<h2>🌧 You’re Not Alone 🌧</h2><p>It’s okay to not be okay. Even gentle hearts need space to heal. If it's too heavy, please reach out — you matter deeply. 💛</p>`;
     }
@@ -343,11 +453,9 @@ if (includes('love table', 'relationship table', 'feelings table')) {
     if (includes('bye', 'goodbye', 'see you')) {
       return `<h2>💫 Goodbye 💫</h2><p>Until next time — may your days stay warm and your heart stay calm. 💌</p>`;
     }
-
     // default
     return `<p>💖 I’m listening with care — tell me more if you’d like. 🌸</p>`;
   }
-
   // ---- copy/share/save delegation ----
   document.addEventListener('click', (e) => {
     const copyBtn = e.target.closest('.copy-btn');
@@ -415,6 +523,7 @@ document.addEventListener("click", () => {
 
     greetingEl.textContent = `${greeting}, ${user.username} ❤️`;
   }
+
 
 
   // ---- layout responsiveness ----
