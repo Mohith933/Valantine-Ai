@@ -356,7 +356,7 @@ function resetFlow() {
     
 
    function generateResponse() {
-  const input = document.getElementById("userInput").value;
+  const input = document.getElementById("userInput").value.toLowerCase();
   const card = document.getElementById("responseCard");
 
   if (!input.trim() || !selectedEmotion) {
@@ -364,66 +364,86 @@ function resetFlow() {
     return;
   }
 
-  const emotionResponses = {
+  const emotionBase = {
     sad: [
-      "It’s not easy feeling this way.",
-      "Even if it feels heavy, you’re still holding on."
-    ],
+  "It feels heavy when no one seems to understand you. You're not wrong for feeling this way.",
+  "Some feelings don’t have easy words. But what you’re feeling right now matters.",
+  "Even if no one sees it, you’re carrying a lot inside. That’s not small.",
+  "It’s okay to not be okay right now. You don’t have to hide it here."
+],
     happy: [
-      "This moment feels light.",
-      "There’s something beautiful in your joy."
-    ],
-    lonely: [
-      "Even in quiet moments, you are not meaningless.",
-      "Loneliness can feel deep sometimes."
-    ],
+  "There’s something genuinely beautiful in this moment. Stay with it.",
+  "This kind of happiness is worth noticing. Don’t rush past it.",
+  "Your joy feels soft and real. Let it exist fully.",
+  "Moments like this are small, but they stay with us."
+],
     love: [
-      "There’s something soft and true in what you feel.",
-      "Love doesn’t need to be perfect to be real."
-    ],
+  "There’s something honest and soft in what you feel.",
+  "Love doesn’t need to be perfect to be real.",
+  "What you feel has meaning, even if it’s complicated.",
+  "This kind of feeling comes from somewhere true."
+],
     confused: [
-      "Not everything needs clarity right now.",
-      "Confusion is often the beginning of understanding."
-    ],
+  "Not everything needs to make sense right now.",
+  "Confusion is sometimes where clarity quietly begins.",
+  "It’s okay to pause instead of forcing answers.",
+  "You don’t have to figure everything out today."
+],
     calm: [
-      "This stillness is something rare.",
-      "Peace like this is worth noticing."
-    ]
+  "This stillness is something rare. Stay here a little longer.",
+  "Peace like this doesn’t always come. Let it settle in.",
+  "There’s a quiet strength in this calm moment.",
+  "Sometimes doing nothing is exactly what you need."
+]
   };
 
-  const responses = emotionResponses[selectedEmotion];
-  let base = responses[Math.floor(Math.random() * responses.length)];
+  let base = emotionBase[selectedEmotion][
+    Math.floor(Math.random() * emotionBase[selectedEmotion].length)
+  ];
+
+  // 🔥 SMART REFLECTION
+  let reflection = "";
+     
+     if (input.includes("no one understands")) {
+  reflection = " Feeling like no one understands you can really hurt.";
+     }
+  if (input.includes("no one") || input.includes("understand")) {
+    reflection = " Feeling like no one understands you can be really isolating.";
+  } 
+  else if (input.includes("alone") || input.includes("lonely")) {
+    reflection = " That sense of being alone can feel really deep.";
+  } 
+  else if (input.includes("tired") || input.includes("exhausted")) {
+    reflection = " You sound emotionally tired too.";
+  } 
+  else if (input.includes("sad")) {
+    reflection = " That sadness you’re carrying matters.";
+  }
+
+  // 🔥 SOFT CLOSING LINE
+  const closings = [
+    " You don’t have to go through it all at once.",
+    " Take this moment gently.",
+    " It’s okay to just feel this for now."
+  ];
+
+  const closing = closings[Math.floor(Math.random() * closings.length)];
+
+  const finalText = base + reflection + closing;
 
   const nameLine = "Just for you 💖";
 
-  const messages = [
-  "You matter more than you think 💖",
-  "Someone out there is proud of you 🌸",
-  "Keep going… you're closer than you feel ✨",
-  "This moment will pass, stay strong 🌿",
-  "You are doing better than you realize 💫"
-];
-
-const random = messages[Math.floor(Math.random() * messages.length)];
-
-
-  const footerLine = "— via Valentine AI 💖";
-
   card.style.display = "block";
-
-// reset state
-card.classList.remove("show");
+  card.classList.remove("show");
 
   setTimeout(() => {
-  
-card.innerHTML = `
-  <div style="font-size:13px; opacity:0.7;">${nameLine}</div>
-  <div style="margin-top:10px; font-size:16px;">${random}</div>
-`;
-      // trigger animation
-  card.classList.add("show");
+    card.innerHTML = `
+      <div style="font-size:13px; opacity:0.7;">${nameLine}</div>
+      <div style="margin-top:10px; font-size:16px;">${finalText}</div>
+    `;
+    card.classList.add("show");
   }, 50);
-}
+  }
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js")
     .then(() => console.log("Service Worker Registered"))
