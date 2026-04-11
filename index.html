@@ -440,15 +440,27 @@ else if (input.includes("sad")) {
 }
 
 const closings = [
-  " You don’t have to handle it all at once.",
-  " Take this moment gently.",
-  " It’s okay to just feel this.",
-  " You’re doing better than you think."
+  " You don’t need to have all the answers right now.",
+  " You can take your time with this.",
+  " Nothing about this needs to be rushed.",
+  " It’s okay to sit with this feeling for a bit."
 ];
 
 const closing = closings[Math.floor(Math.random() * closings.length)];
 
- const finalText = base + extra + closing;
+let personalized = "";
+
+if (input.includes("confused")) {
+  personalized = "Feeling confused about yourself can be really unsettling.";
+}
+else if (input.includes("alone") || input.includes("lonely")) {
+  personalized = "Feeling alone like this can go deeper than words.";
+}
+else if (input.includes("tired")) {
+  personalized = "Being this tired, emotionally, isn’t easy.";
+}
+
+const finalText = (personalized || base) + extra + closing;
 
 const headers = [
   "Just for you 💖",
