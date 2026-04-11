@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Valentine</title>
+  <title>Valentine (a quiet space)</title>
   <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ba174a">
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -224,47 +224,48 @@
     <button class="nav-btn" onclick="enterApp()">Enter</button>
   </nav>
 
-  <!-- LANDING -->
-  <div id="landing">
-    <header>
-      <div class="hero-emoji">💖</div>
-      <h1>Not a chatbot.<br>A space to feel.</h1>
-      <p>
-        Valentine AI is a calm experience designed to help you express emotions,
-        reflect quietly, and create something meaningful — without pressure.
-      </p>
-      <button class="primary-btn" onclick="enterApp()">
-        💖 Enter Your Space
-      </button>
-    </header>
+<!-- LANDING -->
+<div id="landing">
+  <header>
+    <div class="hero-emoji">💖</div>
+    <h1>Not a chatbot.<br>A space to feel.</h1>
+    <p>
+      Valentine is a quiet space to express what’s inside you,
+      reflect gently, and turn feelings into something meaningful —
+      without pressure.
+    </p>
+    <button class="primary-btn" onclick="enterApp()">
+      💖 Enter Your Space
+    </button>
+  </header>
 
-    <section class="features">
-      <div class="card">
-        <h3>💬 Express Freely</h3>
-        <p>Write what’s on your mind without structure or judgment.</p>
-      </div>
+  <section class="features">
+    <div class="card">
+      <h3>💬 Express Freely</h3>
+      <p>Write what’s on your mind, just as it is.</p>
+    </div>
 
-      <div class="card">
-        <h3>📝 Turn Feelings into Words</h3>
-        <p>Create letters, notes, or something beautiful from emotion.</p>
-      </div>
+    <div class="card">
+      <h3>📝 Turn Feelings into Words</h3>
+      <p>Let your emotions shape something soft and real.</p>
+    </div>
 
-      <div class="card">
-        <h3>🎧 Hear It Back</h3>
-        <p>Listen to your thoughts in a soft, calming voice.</p>
-      </div>
+    <div class="card">
+      <h3>🎧 Hear It Back</h3>
+      <p>Listen to your thoughts in a calm, gentle voice.</p>
+    </div>
 
-      <div class="card">
-        <h3>🌙 Slow Experience</h3>
-        <p>No noise. No overload. Just a peaceful space.</p>
-      </div>
-    </section>
+    <div class="card">
+      <h3>🌙 Slow Experience</h3>
+      <p>No noise. No rush. Just a quiet moment for you.</p>
+    </div>
+  </section>
 
-    <footer>
-      This isn’t about talking to AI. It’s about understanding yourself.<br><br>
-      © 2025 Valentine AI — Heartbyte Studio
-    </footer>
-  </div>
+  <footer>
+    This isn’t about technology. It’s about understanding yourself.<br><br>
+    © 2025 Valentine — Heartbyte Studio
+  </footer>
+</div>
 
   <!-- EXPERIENCE -->
   <div class="experience" id="experience">
@@ -327,7 +328,7 @@ https://your-link.com`;
 
   if (navigator.share) {
     navigator.share({
-      title: "Valentine AI 💖",
+      title: "Valentine 💖",
       text: shareMessage
     });
   } else {
@@ -460,7 +461,19 @@ else if (input.includes("tired")) {
   personalized = "Being this tired, emotionally, isn’t easy.";
 }
 
-const finalText = (personalized || base) + extra + closing;
+const styles = ["full", "short", "deep"];
+
+let finalText = "";
+
+if (styles[Math.floor(Math.random() * styles.length)] === "short") {
+  finalText = (personalized || base);
+} 
+else if (styles[Math.floor(Math.random() * styles.length)] === "deep") {
+  finalText = (personalized || base) + extra + " " + signature;
+} 
+else {
+  finalText = (personalized || base) + extra + closing;
+}
 
 const headers = [
   "Just for you 💖",
@@ -470,7 +483,7 @@ const headers = [
 ];
 
 const nameLine = headers[Math.floor(Math.random() * headers.length)];
-  const footerLine = "— via Valentine AI 💖";
+  const footerLine = "— via Valentine 💖";
 
   card.style.display = "block";
   card.classList.remove("show");
