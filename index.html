@@ -296,220 +296,157 @@
 </p>
   </div>
 
-  <script>
-  
-    let selectedEmotion = "";
+  <script type="module">
+  import * as webllm from "https://esm.run/@mlc-ai/web-llm@0.2.46"
 
-function selectEmotion(emotion, el) {
-  selectedEmotion = emotion;
+  let selectedEmotion = "";
+  let engine = null;
+  let modelReady = false;
 
-  // remove active from all
-  document.querySelectorAll(".emotion-btn").forEach(btn => {
-    btn.classList.remove("active");
-  });
+  // ===== WEBLLM SETUP =====
+  const statusEl = document.createElement('p')
+  statusEl.style.cssText = "font-size:12px; opacity:0.7; margin-top:10px;"
+  statusEl.textContent = "Preparing your quiet space..."
+  document.querySelector('.experience').insertBefore(statusEl, document.querySelector('.emotion-grid'))
 
-  // add to clicked
-  el.classList.add("active");
-}
-
- 
-function copyText() {
-  const text = document.getElementById("responseCard").innerText;
-  navigator.clipboard.writeText(text);
-  alert("Copied 💖");
-}
-function shareText() {
-  const text = document.getElementById("responseCard").innerText;
-
-  const shareMessage = `${text}
-
-💖 Try this:
-https://your-link.com`;
-
-  if (navigator.share) {
-    navigator.share({
-      title: "Valentine 💖",
-      text: shareMessage
-    });
-  } else {
-    navigator.clipboard.writeText(shareMessage);
-    alert("Copied 💖 Share it!");
+  async function loadModel() {
+    try {
+      engine = await webllm.CreateMLCEngine(
+        "Llama-3.1-3B-Instruct-q4f16_1-MLC", // 3B model
+        { initProgressCallback: (report) => {
+            statusEl.textContent = report.text
+          }
+        }
+      )
+      modelReady = true
+      statusEl.textContent = "I'm here. You can share now 🕊️"
+      document.querySelectorAll('.emotion-btn, .primary-btn').forEach(b => b.disabled = false)
+    } catch(e) {
+      statusEl.textContent = "Offline mode. Using gentle templates 🕊️"
+      modelReady = false // fallback to templates
+    }
   }
-}
-function resetFlow() {
-  document.getElementById("userInput").value = "";
-  document.getElementById("responseCard").style.display = "none";
-  
-  document.querySelectorAll(".emotion-btn").forEach(btn => {
-    btn.classList.remove("active");
-  });
+  loadModel() // start loading immediately
 
-  selectedEmotion = "";
-}
-    function enterApp() {
-      document.getElementById("landing").style.display = "none";
-      document.getElementById("experience").style.display = "block";
-    }
-
-    function goBack() {
-      document.getElementById("landing").style.display = "block";
-      document.getElementById("experience").style.display = "none";
-    }
-
-    
-
-    
-
-   function generateResponse() {
-  const input = document.getElementById("userInput").value.toLowerCase();
-  const card = document.getElementById("responseCard");
-
-  if (!input.trim() || !selectedEmotion) {
-    alert("Select emotion + write something 💭");
-    return;
+  // ===== YOUR EXISTING FUNCTIONS, UPGRADED =====
+  window.selectEmotion = function(emotion, el) {
+    selectedEmotion = emotion;
+    document.querySelectorAll(".emotion-btn").forEach(btn => btn.classList.remove("active"));
+    el.classList.add("active");
   }
 
-  const signatureLines = [
-  "You’re not invisible.",
-  "This feeling matters.",
-  "You’re still here. That counts.",
-  "You don’t have to carry this alone.",
-  "Even this moment has meaning."
-];
+  window.copyText = function() {
+    const text = document.getElementById("responseCard").innerText;
+    navigator.clipboard.writeText(text);
+    alert("Copied 💖");
+  }
 
-const signature = signatureLines[Math.floor(Math.random() * signatureLines.length)];
+  window.shareText = function() {
+    const text = document.getElementById("responseCard").innerText;
+    const shareMessage = `${text}\n\n💖 Try Valentine:\nhttps://rhith933.github.io/valantine`;
+    if (navigator.share) {
+      navigator.share({ title: "Valentine 💖", text: shareMessage });
+    } else {
+      navigator.clipboard.writeText(shareMessage);
+      alert("Copied 💖 Share it!");
+    }
+  }
 
+  window.resetFlow = function() {
+    document.getElementById("userInput").value = "";
+    document.getElementById("responseCard").style.display = "none";
+    document.querySelectorAll(".emotion-btn").forEach(btn => btn.classList.remove("active"));
+    selectedEmotion = "";
+  }
 
+  window.enterApp = function() {
+    document.getElementById("landing").style.display = "none";
+    document.getElementById("experience").style.display = "block";
+  }
 
- const emotionResponses = {
-  sad: [
-    "It feels heavy when no one seems to understand you.",
-    "Some feelings don’t have easy words, and that’s okay.",
-    "Even if no one sees it, you’re carrying a lot inside.",
-    "It’s okay to not be okay right now."
-  ],
-  happy: [
-    "There’s something genuinely beautiful in this moment.",
-    "This kind of happiness is worth holding onto.",
-    "Your joy feels soft and real.",
-    "Moments like this stay longer than we think."
-  ],
-  lonely: [
-    "Feeling alone like this can be really deep.",
-    "Sometimes the quiet feels louder than everything else.",
-    "Even in loneliness, you still matter.",
-    "You may feel alone, but you’re not nothing."
-  ],
-  love: [
-    "There’s something honest in what you feel.",
-    "Love doesn’t need to be perfect to be real.",
-    "What you feel has meaning.",
-    "This feeling comes from somewhere true."
-  ],
-  confused: [
-    "Not everything needs to make sense right now.",
-    "You don’t have to figure everything out today.",
-    "It’s okay to pause instead of forcing answers.",
-    "Clarity takes time sometimes."
-  ],
-  calm: [
-    "This stillness feels peaceful.",
-    "Peace like this is rare. Stay here a bit.",
-    "There’s strength in this calm moment.",
-    "Sometimes doing nothing is enough."
-  ]
-};
+  window.goBack = function() {
+    document.getElementById("landing").style.display = "block";
+    document.getElementById("experience").style.display = "none";
+  }
 
-  let base = emotionResponses[selectedEmotion][
-    Math.floor(Math.random() * emotionResponses[selectedEmotion].length)
-  ];
+  // ===== NEW generateResponse WITH WEBLLM =====
+  window.generateResponse = async function() {
+    const input = document.getElementById("userInput").value.trim();
+    const card = document.getElementById("responseCard");
 
-  // 💡 SMART TOUCH (key part)
-  let extra = "";
+    if (!input || !selectedEmotion) {
+      alert("Select emotion + write something 💭");
+      return;
+    }
 
-if (input.includes("no one") || input.includes("understand")) {
-  extra = " Feeling like no one understands you can really hurt.";
-} 
-else if (input.includes("alone") || input.includes("lonely")) {
-  extra = " That sense of being alone can feel really deep.";
-} 
-else if (input.includes("tired") || input.includes("exhausted")) {
-  extra = " You sound emotionally tired too.";
-} 
-else if (input.includes("sad")) {
-  extra = " That sadness you’re carrying matters.";
-}
+    card.style.display = "block";
+    card.classList.remove("show");
+    card.innerHTML = `<div style="opacity:0.7;">Listening...</div>`;
+    setTimeout(() => card.classList.add("show"), 50);
 
-const closings = [
-  " You don’t need to have all the answers right now.",
-  " You can take your time with this.",
-  " Nothing about this needs to be rushed.",
-  " It’s okay to sit with this feeling for a bit."
-];
+    let finalText = "";
 
-const closing = closings[Math.floor(Math.random() * closings.length)];
+    // If WebLLM loaded, use it. Else fallback to your templates
+    if (modelReady && engine) {
+      try {
+        const reply = await engine.chat.completions.create({
+          messages: [
+            {
+              role: "system",
+              content: `You are Valentine. A quiet space to feel. The user feels "${selectedEmotion}" and wrote: "${input}". Reply with ONLY 1 warm paragraph, max 35 words. No questions. No advice. No "as an AI". Validate their feeling like a close friend. Start with "I hear you", "That sounds", "Mm", or "Oof". End with quiet care.`
+            },
+            { role: "user", content: input }
+          ],
+          temperature: 0.85,
+          max_tokens: 70
+        })
+        finalText = reply.choices[0].message.content
+      } catch(e) {
+        finalText = "I'm here with you. Even when words fail, this moment matters 🕊️"
+      }
+    } else {
+      // Fallback: your old template system so it never breaks
+      const emotionResponses = {
+        sad: ["It feels heavy when no one seems to understand you.", "Some feelings don’t have easy words, and that’s okay."],
+        happy: ["There’s something genuinely beautiful in this moment.", "This kind of happiness is worth holding onto."],
+        lonely: ["Feeling alone like this can be really deep.", "Even in loneliness, you still matter."],
+        love: ["There’s something honest in what you feel.", "Love doesn’t need to be perfect to be real."],
+        confused: ["Not everything needs to make sense right now.", "It’s okay to pause instead of forcing answers."],
+        calm: ["This stillness feels peaceful.", "There’s strength in this calm moment."]
+      };
+      finalText = emotionResponses[selectedEmotion][Math.floor(Math.random() * emotionResponses[selectedEmotion].length)]
+    }
 
-let personalized = "";
+    // Save to localStorage - no backend needed
+    const past = JSON.parse(localStorage.getItem('valentine_reflections') || '[]')
+    past.unshift({ 
+      date: new Date().toISOString(), 
+      emotion: selectedEmotion,
+      input: input, 
+      output: finalText 
+    })
+    localStorage.setItem('valentine_reflections', JSON.stringify(past.slice(0, 50))) // keep last 50
 
-if (input.includes("confused")) {
-  personalized = "Feeling confused about yourself can be really unsettling.";
-}
-else if (input.includes("alone") || input.includes("lonely")) {
-  personalized = "Feeling alone like this can go deeper than words.";
-}
-else if (input.includes("tired")) {
-  personalized = "Being this tired, emotionally, isn’t easy.";
-}
+    // Show it
+    const headers = ["Just for you 💖", "A small note for you 🌙", "Hey… this is for you", "Something gentle for you 💫"];
+    const nameLine = headers[Math.floor(Math.random() * headers.length)];
+    const signatureLines = ["You’re not invisible.", "This feeling matters.", "You don’t have to carry this alone."];
+    const signature = signatureLines[Math.floor(Math.random() * signatureLines.length)];
 
-const styles = ["full", "short", "deep"];
+    setTimeout(() => {
+      card.innerHTML = `
+        <div style="font-size:13px; opacity:0.7;">${nameLine}</div>
+        <div style="margin-top:10px; font-size:16px; line-height:1.5;">${finalText}</div>
+        <div style="margin-top:10px; font-size:14px; opacity:0.9;">${signature}</div>
+        <div style="margin-top:15px; font-size:12px; opacity:0.6;">— via Valentine 💖</div>
+      `;
+    }, 300)
+  }
 
-let finalText = "";
-
-if (styles[Math.floor(Math.random() * styles.length)] === "short") {
-  finalText = (personalized || base);
-} 
-else if (styles[Math.floor(Math.random() * styles.length)] === "deep") {
-  finalText = (personalized || base) + extra + " " + signature;
-} 
-else {
-  finalText = (personalized || base) + extra + closing;
-}
-
-const headers = [
-  "Just for you 💖",
-  "A small note for you 🌙",
-  "Hey… this is for you",
-  "Something gentle for you 💫"
-];
-
-const nameLine = headers[Math.floor(Math.random() * headers.length)];
-  const footerLine = "— via Valentine 💖";
-
-  card.style.display = "block";
-  card.classList.remove("show");
-
-  setTimeout(() => {
-   card.innerHTML = `
-  <div style="font-size:13px; opacity:0.7;">${nameLine}</div>
-  <div style="margin-top:10px; font-size:16px; line-height:1.5;">
-    ${finalText}
-  </div>
-  <div style="margin-top:10px; font-size:14px; opacity:0.9;">
-    ${signature}
-  </div>
-  <div style="margin-top:15px; font-size:12px; opacity:0.6;">
-    ${footerLine}
-  </div>
-`;
-    card.classList.add("show");
-  }, 50);
-}
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js")
-    .then(() => console.log("Service Worker Registered"))
-    .catch(err => console.log("SW Error:", err));
-}
-  </script>
-
+  // PWA Service Worker
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js")
+  }
+</script>
 </body>
 </html>
