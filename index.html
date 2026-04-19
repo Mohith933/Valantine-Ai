@@ -297,7 +297,7 @@
   </div>
 
   <script>
-
+  
     let selectedEmotion = "";
 
 function selectEmotion(emotion, el) {
@@ -312,7 +312,7 @@ function selectEmotion(emotion, el) {
   el.classList.add("active");
 }
 
-
+ 
 function copyText() {
   const text = document.getElementById("responseCard").innerText;
   navigator.clipboard.writeText(text);
@@ -339,7 +339,7 @@ https://your-link.com`;
 function resetFlow() {
   document.getElementById("userInput").value = "";
   document.getElementById("responseCard").style.display = "none";
-
+  
   document.querySelectorAll(".emotion-btn").forEach(btn => {
     btn.classList.remove("active");
   });
@@ -356,11 +356,28 @@ function resetFlow() {
       document.getElementById("experience").style.display = "none";
     }
 
+    
+    
 
+    
 
+  // 🔹 MEMORY INIT (put this OUTSIDE function, top of file)
+const memory = JSON.parse(localStorage.getItem("valentineMemory")) || {
+  history: [],
+  lastEmotion: null
+};
 
+// 🔹 RHYTHM FUNCTION
+function addRhythm(text) {
+  const styles = ["pause", "linebreak", "soft"];
+  const style = styles[Math.floor(Math.random() * styles.length)];
 
-   function generateResponse() {
+  if (style === "pause") return text.replace(".", "... ");
+  if (style === "linebreak") return text.replace(". ", ".<br><br>");
+  return text;
+}
+
+function generateResponse() {
   const input = document.getElementById("userInput").value.toLowerCase();
   const card = document.getElementById("responseCard");
 
@@ -370,139 +387,156 @@ function resetFlow() {
   }
 
   const signatureLines = [
-  "You’re not invisible.",
-  "This feeling matters.",
-  "You’re still here. That counts.",
-  "You don’t have to carry this alone.",
-  "Even this moment has meaning."
-];
-
-const signature = signatureLines[Math.floor(Math.random() * signatureLines.length)];
-
-
-
- const emotionResponses = {
-  sad: [
-    "It feels heavy when no one seems to understand you.",
-    "Some feelings don’t have easy words, and that’s okay.",
-    "Even if no one sees it, you’re carrying a lot inside.",
-    "It’s okay to not be okay right now."
-  ],
-  happy: [
-    "There’s something genuinely beautiful in this moment.",
-    "This kind of happiness is worth holding onto.",
-    "Your joy feels soft and real.",
-    "Moments like this stay longer than we think."
-  ],
-  lonely: [
-    "Feeling alone like this can be really deep.",
-    "Sometimes the quiet feels louder than everything else.",
-    "Even in loneliness, you still matter.",
-    "You may feel alone, but you’re not nothing."
-  ],
-  love: [
-    "There’s something honest in what you feel.",
-    "Love doesn’t need to be perfect to be real.",
-    "What you feel has meaning.",
-    "This feeling comes from somewhere true."
-  ],
-  confused: [
-    "Not everything needs to make sense right now.",
-    "You don’t have to figure everything out today.",
-    "It’s okay to pause instead of forcing answers.",
-    "Clarity takes time sometimes."
-  ],
-  calm: [
-    "This stillness feels peaceful.",
-    "Peace like this is rare. Stay here a bit.",
-    "There’s strength in this calm moment.",
-    "Sometimes doing nothing is enough."
-  ]
-};
-
-  let base = emotionResponses[selectedEmotion][
-    Math.floor(Math.random() * emotionResponses[selectedEmotion].length)
+    "You’re not invisible.",
+    "This feeling matters.",
+    "You’re still here. That counts.",
+    "You don’t have to carry this alone.",
+    "Even this moment has meaning."
   ];
 
-  // 💡 SMART TOUCH (key part)
+  const signature = signatureLines[Math.floor(Math.random() * signatureLines.length)];
+
+  const emotionResponses = {
+    sad: [
+      "It feels heavy when no one seems to understand you.",
+      "Some feelings don’t have easy words, and that’s okay.",
+      "Even if no one sees it, you’re carrying a lot inside.",
+      "It’s okay to not be okay right now."
+    ],
+    happy: [
+      "There’s something genuinely beautiful in this moment.",
+      "This kind of happiness is worth holding onto.",
+      "Your joy feels soft and real.",
+      "Moments like this stay longer than we think."
+    ],
+    lonely: [
+      "Feeling alone like this can be really deep.",
+      "Sometimes the quiet feels louder than everything else.",
+      "Even in loneliness, you still matter.",
+      "You may feel alone, but you’re not nothing."
+    ],
+    love: [
+      "There’s something honest in what you feel.",
+      "Love doesn’t need to be perfect to be real.",
+      "What you feel has meaning.",
+      "This feeling comes from somewhere true."
+    ],
+    confused: [
+      "Not everything needs to make sense right now.",
+      "You don’t have to figure everything out today.",
+      "It’s okay to pause instead of forcing answers.",
+      "Clarity takes time sometimes."
+    ],
+    calm: [
+      "This stillness feels peaceful.",
+      "Peace like this is rare. Stay here a bit.",
+      "There’s strength in this calm moment.",
+      "Sometimes doing nothing is enough."
+    ]
+  };
+
+  // 🔹 Avoid repetition
+  const used = memory.history;
+  let options = emotionResponses[selectedEmotion].filter(line => !used.includes(line));
+  if (options.length === 0) options = emotionResponses[selectedEmotion];
+
+  let base = options[Math.floor(Math.random() * options.length)];
+
+  // 🔹 Smart touch
   let extra = "";
+  if (input.includes("no one") || input.includes("understand")) {
+    extra = " Feeling like no one understands you can really hurt.";
+  } else if (input.includes("alone") || input.includes("lonely")) {
+    extra = " That sense of being alone can feel really deep.";
+  } else if (input.includes("tired") || input.includes("exhausted")) {
+    extra = " You sound emotionally tired too.";
+  } else if (input.includes("sad")) {
+    extra = " That sadness you’re carrying matters.";
+  }
 
-if (input.includes("no one") || input.includes("understand")) {
-  extra = " Feeling like no one understands you can really hurt.";
-} 
-else if (input.includes("alone") || input.includes("lonely")) {
-  extra = " That sense of being alone can feel really deep.";
-} 
-else if (input.includes("tired") || input.includes("exhausted")) {
-  extra = " You sound emotionally tired too.";
-} 
-else if (input.includes("sad")) {
-  extra = " That sadness you’re carrying matters.";
-}
+  const closings = [
+    " You don’t need to have all the answers right now.",
+    " You can take your time with this.",
+    " Nothing about this needs to be rushed.",
+    " It’s okay to sit with this feeling for a bit."
+  ];
 
-const closings = [
-  " You don’t need to have all the answers right now.",
-  " You can take your time with this.",
-  " Nothing about this needs to be rushed.",
-  " It’s okay to sit with this feeling for a bit."
-];
+  const closing = closings[Math.floor(Math.random() * closings.length)];
 
-const closing = closings[Math.floor(Math.random() * closings.length)];
+  let personalized = "";
+  if (input.includes("confused")) {
+    personalized = "Feeling confused about yourself can be really unsettling.";
+  } else if (input.includes("alone") || input.includes("lonely")) {
+    personalized = "Feeling alone like this can go deeper than words.";
+  } else if (input.includes("tired")) {
+    personalized = "Being this tired, emotionally, isn’t easy.";
+  }
 
-let personalized = "";
+  // 🔹 FIXED STYLE (single pick)
+  const styles = ["full", "short", "deep"];
+  const chosenStyle = styles[Math.floor(Math.random() * styles.length)];
 
-if (input.includes("confused")) {
-  personalized = "Feeling confused about yourself can be really unsettling.";
-}
-else if (input.includes("alone") || input.includes("lonely")) {
-  personalized = "Feeling alone like this can go deeper than words.";
-}
-else if (input.includes("tired")) {
-  personalized = "Being this tired, emotionally, isn’t easy.";
-}
+  let finalText = "";
+  if (chosenStyle === "short") {
+    finalText = (personalized || base);
+  } else if (chosenStyle === "deep") {
+    finalText = (personalized || base) + extra + " " + signature;
+  } else {
+    finalText = (personalized || base) + extra + closing;
+  }
 
-const styles = ["full", "short", "deep"];
+  // 🔹 Human touch
+  const humanTouches = [
+    "",
+    " It’s a lot, I know.",
+    " Yeah… it can feel like that.",
+    " Hmm… that’s not easy.",
+    " I hear you."
+  ];
+  finalText += humanTouches[Math.floor(Math.random() * humanTouches.length)];
 
-let finalText = "";
+  // 🔹 Rhythm
+  finalText = addRhythm(finalText);
 
-if (styles[Math.floor(Math.random() * styles.length)] === "short") {
-  finalText = (personalized || base);
-} 
-else if (styles[Math.floor(Math.random() * styles.length)] === "deep") {
-  finalText = (personalized || base) + extra + " " + signature;
-} 
-else {
-  finalText = (personalized || base) + extra + closing;
-}
+  // 🔹 Save memory
+  memory.history.push(finalText);
+  if (memory.history.length > 10) memory.history.shift();
+  memory.lastEmotion = selectedEmotion;
+  localStorage.setItem("valentineMemory", JSON.stringify(memory));
 
-const headers = [
-  "Just for you 💖",
-  "A small note for you 🌙",
-  "Hey… this is for you",
-  "Something gentle for you 💫"
-];
+  const headers = [
+    "Just for you 💖",
+    "A small note for you 🌙",
+    "Hey… this is for you",
+    "Something gentle for you 💫"
+  ];
 
-const nameLine = headers[Math.floor(Math.random() * headers.length)];
+  const nameLine = headers[Math.floor(Math.random() * headers.length)];
   const footerLine = "— via Valentine 💖";
 
   card.style.display = "block";
   card.classList.remove("show");
 
+  // 🔹 Show "writing..." first
+  card.innerHTML = `<div style="opacity:0.6;">writing...</div>`;
+
+  const delay = 600 + Math.random() * 800;
+
   setTimeout(() => {
-   card.innerHTML = `
-  <div style="font-size:13px; opacity:0.7;">${nameLine}</div>
-  <div style="margin-top:10px; font-size:16px; line-height:1.5;">
-    ${finalText}
-  </div>
-  <div style="margin-top:10px; font-size:14px; opacity:0.9;">
-    ${signature}
-  </div>
-  <div style="margin-top:15px; font-size:12px; opacity:0.6;">
-    ${footerLine}
-  </div>
-`;
+    card.innerHTML = `
+      <div style="font-size:13px; opacity:0.7;">${nameLine}</div>
+      <div style="margin-top:10px; font-size:16px; line-height:1.6;">
+        ${finalText}
+      </div>
+      <div style="margin-top:10px; font-size:14px; opacity:0.9;">
+        ${signature}
+      </div>
+      <div style="margin-top:15px; font-size:12px; opacity:0.6;">
+        ${footerLine}
+      </div>
+    `;
     card.classList.add("show");
-  }, 50);
+  }, delay);
 }
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js")
