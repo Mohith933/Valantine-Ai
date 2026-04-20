@@ -228,7 +228,7 @@
 <div id="landing">
   <header>
     <div class="hero-emoji">💖</div>
-    <h1>Not a chatbot.<br>A space to feel.</h1>
+    <h1>Feeling something heavy?<br>Put it here. We’ll reflect it back.</h1>
     <p>
       Valentine is a quiet space to express what’s inside you,
       reflect gently, and turn feelings into something meaningful —
@@ -270,7 +270,9 @@
   <!-- EXPERIENCE -->
   <div class="experience" id="experience">
     <h2>How are you feeling today?</h2>
-
+<p style="opacity:0.7; margin-top:10px;">
+  Pick a feeling → write → tap reflect
+</p>
    <div class="emotion-grid">
   <button class="emotion-btn" onclick="selectEmotion('sad', this)">💔 Sad</button>
   <button class="emotion-btn" onclick="selectEmotion('happy', this)">😊 Happy</button>
@@ -280,11 +282,20 @@
   <button class="emotion-btn" onclick="selectEmotion('calm', this)">🌙 Calm</button>
 </div>
 
-    <textarea id="userInput" placeholder="Write what you feel..."></textarea>
+<p style="margin-top:10px; font-size:13px; opacity:0.6;">
+  🔒 Nothing is stored. No one sees this. Just you.
+</p>
+
+    <textarea id="userInput" placeholder="Type what you're feeling. No need to filter it."></textarea>
 
 <button class="primary-btn" onclick="generateResponse()">
   ✨ Reflect
 </button>
+
+<p style="opacity:0.5; font-size:12px; margin-top:15px;">
+  something gentle for you
+</p>
+
 <div id="responseCard" class="response-card"></div>
 <button class="primary-btn" onclick="copyText()">Copy 💌</button>
 <button class="primary-btn" onclick="shareText()">Share 💖</button>
@@ -323,7 +334,8 @@ function shareText() {
 
   const shareMessage = `${text}
 
-💖 Try this:
+This helped me put something into words…
+Try it quietly:
 https://your-link.com`;
 
   if (navigator.share) {
@@ -505,11 +517,11 @@ function generateResponse() {
   localStorage.setItem("valentineMemory", JSON.stringify(memory));
 
   const headers = [
-    "Just for you 💖",
-    "A small note for you 🌙",
-    "Hey… this is for you",
-    "Something gentle for you 💫"
-  ];
+  "Hey… I read this",
+  "Something from what you wrote",
+  "This came through softly",
+  "I sat with this for a moment"
+];
 
   const nameLine = headers[Math.floor(Math.random() * headers.length)];
   const footerLine = "— via Valentine 💖";
