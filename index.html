@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Valentine (a quiet space)</title>
+  <title>HeartFeel (a quiet space)</title>
   <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ba174a">
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -222,7 +222,7 @@ z-index:1000;
 
   <!-- NAVBAR -->
   <nav>
-    <div class="logo">❤️ Valentine</div>
+    <div class="logo">❤️ HeartFeel</div>
     <button class="nav-btn" onclick="enterApp()">Enter</button>
   </nav>
 
@@ -232,7 +232,7 @@ z-index:1000;
     <div class="hero-emoji">💖</div>
     <h1>Feeling something heavy?<br>Put it here. We’ll reflect it back.</h1>
     <p>
-      Valentine is a quiet space to express what’s inside you,
+      HeartFeel is a quiet space to express what’s inside you,
       reflect gently, and turn feelings into something meaningful —
       without pressure.
     </p>
@@ -265,7 +265,7 @@ z-index:1000;
 
   <footer>
     This isn’t about technology. It’s about understanding yourself.<br><br>
-    © 2025 Valentine — Heartbyte Studio
+    © 2026 HeartFeel
   </footer>
 </div>
 
@@ -274,7 +274,8 @@ z-index:1000;
     <h2>How are you feeling today?</h2>
 <p style="opacity:0.7; margin-top:10px;">
   Pick a feeling → write → tap reflect
-</p>
+</p>
+
    <div class="emotion-grid">
   <button class="emotion-btn" onclick="selectEmotion('sad', this)">💔 Sad</button>
   <button class="emotion-btn" onclick="selectEmotion('happy', this)">😊 Happy</button>
@@ -342,7 +343,7 @@ https://your-link.com`;
 
   if (navigator.share) {
     navigator.share({
-      title: "Valentine 💖",
+      title: "HeartFeel 💖",
       text: shareMessage
     });
   } else {
@@ -526,7 +527,7 @@ function generateResponse() {
 ];
 
   const nameLine = headers[Math.floor(Math.random() * headers.length)];
-  const footerLine = "— via Valentine 💖";
+  const footerLine = "— via HeartFeel 💖";
 
   card.style.display = "block";
   card.classList.remove("show");
