@@ -126,6 +126,30 @@ z-index:1000;
       margin: auto;
     }
 
+    .toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: all 0.3s ease;
+  z-index: 9999;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
     .emotion-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -162,6 +186,10 @@ z-index:1000;
 
 .primary-btn:active {
   transform: scale(0.95);
+}
+
+.primary-btn, .back-btn {
+  margin: 6px;
 }
 
 .response-card {
@@ -271,6 +299,7 @@ z-index:1000;
 
   <!-- EXPERIENCE -->
   <div class="experience" id="experience">
+    <div id="toast" class="toast"></div>
     <h2>How are you feeling today?</h2>
 <p style="opacity:0.7; margin-top:10px;">
   Pick a feeling → write → tap reflect
@@ -296,7 +325,7 @@ z-index:1000;
 </button>
 
 <p style="opacity:0.5; font-size:12px; margin-top:15px;">
-  something gentle for you
+  A quiet response, just for you
 </p>
 
 <div id="responseCard" class="response-card"></div>
@@ -326,18 +355,34 @@ function selectEmotion(emotion, el) {
   el.classList.add("active");
 }
 
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.innerText = message;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2000);
+}
  
 function copyText() {
-  const text = document.getElementById("responseCard").innerText;
-  navigator.clipboard.writeText(text);
-  alert("Copied 💖");
+  const raw = document.getElementById("responseCard").innerHTML;
+  const clean = raw
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<[^>]*>/g, "");
+
+  navigator.clipboard.writeText(clean);
+  showToast("Copied quietly 💖");
+  
 }
+
 function shareText() {
   const text = document.getElementById("responseCard").innerText;
 
   const shareMessage = `${text}
 
-This helped me put something into words…
+This said something I couldn’t explain…
 Try it quietly:
 https://your-link.com`;
 
@@ -347,10 +392,18 @@ https://your-link.com`;
       text: shareMessage
     });
   } else {
-    navigator.clipboard.writeText(shareMessage);
-    alert("Copied 💖 Share it!");
-  }
+  navigator.clipboard.writeText(shareMessage);
+  showToast("Copied to share 💖");
 }
+}
+
+const msgs = [
+  "Copied quietly 💖",
+  "Saved for you 🤍",
+  "It’s with you now ✨"
+];
+showToast(msgs[Math.floor(Math.random() * msgs.length)]);
+
 function resetFlow() {
   document.getElementById("userInput").value = "";
   document.getElementById("responseCard").style.display = "none";
@@ -497,7 +550,12 @@ function generateResponse() {
   } else if (chosenStyle === "deep") {
     finalText = (personalized || base) + extra + " " + signature;
   } else {
-    finalText = (personalized || base) + extra + closing;
+    finalText = (personalized || base);
+
+// only sometimes add one extra
+if (Math.random() > 0.6) {
+  finalText += closing;
+}
   }
 
   // 🔹 Human touch
@@ -533,8 +591,7 @@ function generateResponse() {
   card.classList.remove("show");
 
   // 🔹 Show "writing..." first
-  card.innerHTML = `<div style="opacity:0.6;">writing...</div>`;
-
+  card.innerHTML = `<div style="opacity:0.6;">sitting with your words...</div>`;
   const delay = 600 + Math.random() * 800;
 
   setTimeout(() => {
