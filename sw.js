@@ -1,4 +1,4 @@
-const CACHE_NAME = "valentine-ai-v1";
+const CACHE_NAME = "heartfeel-v1";
 
 const urlsToCache = [
   "index.html",
