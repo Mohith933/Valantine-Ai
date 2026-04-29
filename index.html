@@ -318,20 +318,20 @@ z-index:1000;
   🔒 Nothing is stored. No one sees this. Just you.
 </p>
 
-    <textarea id="userInput" placeholder="Type what you're feeling. No need to filter it."></textarea>
+    <textarea id="userInput" placeholder="write what’s sitting in your mind… no need to filter it"></textarea>
 
 <button class="primary-btn" onclick="generateResponse()">
   ✨ Reflect
 </button>
 
-<p style="opacity:0.5; font-size:12px; margin-top:15px;">
-  A quiet response, just for you
+<p style="font-size:12px; opacity:0.5; margin-top:10px;">
+  keep this… or send it to someone who might need it
 </p>
 
 <div id="responseCard" class="response-card"></div>
 <button class="primary-btn" onclick="copyText()">Copy 💌</button>
-<button class="primary-btn" onclick="shareText()">Share 💖</button>
-<button class="back-btn" onclick="resetFlow()">New Reflection</button>
+<button class="primary-btn" onclick="shareText()">Send quietly 💌</button>
+<button class="back-btn" onclick="resetFlow()">Try Again</button>
 
     <button class="back-btn" onclick="goBack()">← Back</button>
     <p style="margin-top:20px; opacity:0.7;">
@@ -374,16 +374,15 @@ function copyText() {
 
   navigator.clipboard.writeText(clean);
   showToast("Copied quietly 💖");
-  
 }
 
 function shareText() {
   const text = document.getElementById("responseCard").innerText;
 
   const shareMessage = `${text}
-
-This said something I couldn’t explain…
-Try it quietly:
+  
+This understood something I couldn’t say.
+Try it once, quietly:
 https://your-link.com`;
 
   if (navigator.share) {
@@ -396,13 +395,6 @@ https://your-link.com`;
   showToast("Copied to share 💖");
 }
 }
-
-const msgs = [
-  "Copied quietly 💖",
-  "Saved for you 🤍",
-  "It’s with you now ✨"
-];
-showToast(msgs[Math.floor(Math.random() * msgs.length)]);
 
 function resetFlow() {
   document.getElementById("userInput").value = "";
@@ -437,11 +429,9 @@ const memory = JSON.parse(localStorage.getItem("valentineMemory")) || {
 
 // 🔹 RHYTHM FUNCTION
 function addRhythm(text) {
-  const styles = ["pause", "linebreak", "soft"];
-  const style = styles[Math.floor(Math.random() * styles.length)];
-
-  if (style === "pause") return text.replace(".", "... ");
-  if (style === "linebreak") return text.replace(". ", ".<br><br>");
+  if (Math.random() > 0.6) {
+    return text.replace(". ", "... ");
+  }
   return text;
 }
 
@@ -450,23 +440,34 @@ function generateResponse() {
   const card = document.getElementById("responseCard");
 
   if (!input.trim() || !selectedEmotion) {
-    alert("Select emotion + write something 💭");
+    showToast("pick a feeling + write something 💭");
     return;
   }
 
-  const signatureLines = [
-    "You’re not invisible.",
-    "This feeling matters.",
-    "You’re still here. That counts.",
-    "You don’t have to carry this alone.",
-    "Even this moment has meaning."
-  ];
+const signatureLines = [
+  "you’re not invisible.",
+  "this feeling matters.",
+  "you’re still here… that counts.",
+  "i’m here with you in this.",
+  "even this moment means something.",
+  "you don’t have to hold all of it at once.",
+  "it’s okay to feel this, really.",
+  "you made it through today. that matters."
+];
 
-  const signature = signatureLines[Math.floor(Math.random() * signatureLines.length)];
+const msgs = [
+  "it’s yours now 🤍",
+  "keep this with you ✨",
+  "saved, quietly 💭"
+];
+showToast(msgs[Math.floor(Math.random() * msgs.length)]);
+
+const signature =
+  signatureLines[Math.floor(Math.random() * signatureLines.length)];
 
   const emotionResponses = {
     sad: [
-      "It feels heavy when no one seems to understand you.",
+      "it feels heavy when no one really understands you.",
       "Some feelings don’t have easy words, and that’s okay.",
       "Even if no one sees it, you’re carrying a lot inside.",
       "It’s okay to not be okay right now."
@@ -545,27 +546,29 @@ function generateResponse() {
   const chosenStyle = styles[Math.floor(Math.random() * styles.length)];
 
   let finalText = "";
-  if (chosenStyle === "short") {
-    finalText = (personalized || base);
-  } else if (chosenStyle === "deep") {
-    finalText = (personalized || base) + extra + " " + signature;
-  } else {
-    finalText = (personalized || base);
 
-// only sometimes add one extra
+// pick 1 core line
+const core = personalized || base;
+
+// sometimes add ONE extra (not always)
+if (Math.random() > 0.5 && extra) {
+  finalText = core + extra;
+} else {
+  finalText = core;
+}
+
+// sometimes add closing (not always)
 if (Math.random() > 0.6) {
   finalText += closing;
 }
-  }
 
   // 🔹 Human touch
-  const humanTouches = [
-    "",
-    " It’s a lot, I know.",
-    " Yeah… it can feel like that.",
-    " Hmm… that’s not easy.",
-    " I hear you."
-  ];
+ const humanTouches = [
+  "",
+  "…",
+  " yeah…",
+  " I get that."
+];
   finalText += humanTouches[Math.floor(Math.random() * humanTouches.length)];
 
   // 🔹 Rhythm
@@ -577,29 +580,41 @@ if (Math.random() > 0.6) {
   memory.lastEmotion = selectedEmotion;
   localStorage.setItem("valentineMemory", JSON.stringify(memory));
 
-  const headers = [
-  "Hey… I read this",
-  "Something from what you wrote",
-  "This came through softly",
-  "I sat with this for a moment"
+const headers = [
+  "hey… i read this",
+  "something about this stayed with me",
+  "i kept thinking about what you wrote",
+  "this part felt important",
+  "i sat with this for a bit",
+  "this came through quietly",
+  "i’m hearing something here"
 ];
 
-  const nameLine = headers[Math.floor(Math.random() * headers.length)];
-  const footerLine = "— via HeartFeel 💖";
 
-  card.style.display = "block";
-  card.classList.remove("show");
 
-  // 🔹 Show "writing..." first
-  card.innerHTML = `<div style="opacity:0.6;">sitting with your words...</div>`;
-  const delay = 600 + Math.random() * 800;
+ const nameLine = headers[Math.floor(Math.random() * headers.length)];
+const firstSentence = finalText.split(".")[0];
+const hookLine = firstSentence.length > 0 ? firstSentence + "." : finalText;
+const footerLine = "— via HeartFeel 💖";
+
+// Force reset
+card.classList.remove("show");
+card.style.display = "block";
+
+// STEP 1: show writing state FIRST (force paint)
+card.innerHTML = `<div style="opacity:0.6;">sitting with your words...</div>`;
+
+// 🔹 Force browser to render this frame
+requestAnimationFrame(() => {
+
+  const delay = 900 + Math.random() * 600; // slightly longer = more real
 
   setTimeout(() => {
     card.innerHTML = `
       <div style="font-size:13px; opacity:0.7;">${nameLine}</div>
-      <div style="margin-top:10px; font-size:16px; line-height:1.6;">
-        ${finalText}
-      </div>
+<div style="font-size:18px; font-weight:500;">
+  ${hookLine}
+</div>
       <div style="margin-top:10px; font-size:14px; opacity:0.9;">
         ${signature}
       </div>
@@ -609,6 +624,7 @@ if (Math.random() > 0.6) {
     `;
     card.classList.add("show");
   }, delay);
+});
 }
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js")
