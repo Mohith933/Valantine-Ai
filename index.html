@@ -463,12 +463,11 @@ function generateResponse() {
 const signatureLines = [
   "you’re not invisible.",
   "this feeling matters.",
-  "you’re still here… that counts.",
-  "i’m here with you in this.",
-  "even this moment means something.",
-  "you don’t have to hold all of it at once.",
-  "it’s okay to feel this, really.",
-  "you made it through today. that matters."
+  "you don’t have to carry everything at once.",
+  "it’s okay to feel this deeply.",
+  "you made it through today.",
+  "some moments stay heavy for a while.",
+  "you can pause here for a bit."
 ];
 
 const msgs = [
@@ -597,13 +596,13 @@ if (Math.random() > 0.6) {
   localStorage.setItem("valentineMemory", JSON.stringify(memory));
 
 const headers = [
-  "hey… i read this",
-  "something about this stayed with me",
-  "i kept thinking about what you wrote",
-  "this part felt important",
-  "i sat with this for a bit",
-  "this came through quietly",
-  "i’m hearing something here"
+  "i read this slowly",
+  "this stayed with me for a moment",
+  "i think i understand this feeling",
+  "i sat with your words a little",
+  "this feels honest",
+  "i noticed something in this",
+  "i didn’t want to rush past this"
 ];
 
 
@@ -611,7 +610,6 @@ const headers = [
  const nameLine = headers[Math.floor(Math.random() * headers.length)];
 const firstSentence = finalText.split(".")[0];
 const hookLine = firstSentence.length > 0 ? firstSentence + "." : finalText;
-const footerLine = "— via HeartFeel 💖";
 
 // Force reset
 card.classList.remove("show");
@@ -633,9 +631,6 @@ requestAnimationFrame(() => {
 </div>
       <div style="margin-top:10px; font-size:14px; opacity:0.9;">
         ${signature}
-      </div>
-      <div style="margin-top:15px; font-size:12px; opacity:0.6;">
-        ${footerLine}
       </div>
     `;
     card.classList.add("show");
