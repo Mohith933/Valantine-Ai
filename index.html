@@ -5,7 +5,7 @@
   <meta name="viewport"
 content="width=device-width, initial-scale=1.0,
 viewport-fit=cover">
-  <title>HeartFeel (a quiet space)</title>
+  <title>HeartFeel</title>
   <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ba174a">
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -122,14 +122,19 @@ z-index:1000;
       color: #ffd6e0;
     }
 
-    /* EXPERIENCE */
-    .experience {
-      display: none;
-      padding: 150px 20px;
-      max-width: 700px;
-      margin: auto;
-    }
+ .experience {
+    display: none;
+    padding: 100px 20px;
+    max-width: 700px;
+    margin: auto;
+    /* STAGE 3: FADE IN ANIMATION */
+    animation: fadeInV2 0.8s ease-out;
+  }
 
+  @keyframes fadeInV2 {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
     .toast {
   position: fixed;
   bottom: 30px;
@@ -172,30 +177,34 @@ z-index:1000;
     }
 
     textarea {
-      width: 100%;
-      margin-top: 20px;
-      padding: 14px;
-      border-radius: 12px;
-      border: none;
-      resize: none;
-      height: 120px;
-    }
+    width: 100%;
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 15px;
+    border: 2px solid transparent;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+
+  textarea:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
     .emotion-btn {
   transition: all 0.2s ease;
-}
-
+}
 .emotion-btn:hover {
   transform: scale(1.05);
-}
-
+}
 .primary-btn:active {
   transform: scale(0.95);
-}
-
+}
 .primary-btn, .back-btn {
   margin: 6px;
-}
-
+}
 .response-card {
    margin-top: 20px;
   padding: 20px;
@@ -214,6 +223,7 @@ z-index:1000;
 
 .response-card.show {
   opacity: 1;
+animation: fadeUp 0.5s ease;
   transform: translateY(0);
 }
 
@@ -222,6 +232,17 @@ z-index:1000;
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
     .back-btn {
       margin-top: 20px;
@@ -322,11 +343,9 @@ z-index:1000;
   🔒 Nothing is stored. No one sees this. Just you.
 </p>
 
-    <textarea id="userInput" placeholder="write what’s sitting in your mind… no need to filter it"></textarea>
+    <textarea id="userInput" placeholder="Write what's on your mind..." autofocus></textarea>
 
-<button class="primary-btn" onclick="generateResponse()">
-  ✨ Reflect
-</button>
+<button class="primary-btn" onclick="generateResponse()">✨ Reflect</button>
 
 <p style="font-size:12px; opacity:0.5; margin-top:10px;">
   keep this… or send it to someone who might need it
@@ -617,7 +636,7 @@ card.style.display = "block";
 
 // STEP 1: show writing state FIRST (force paint)
 card.innerHTML = `<div style="opacity:0.6;">sitting with your words...</div>`;
-
+card.classList.add("show");
 // 🔹 Force browser to render this frame
 requestAnimationFrame(() => {
 
