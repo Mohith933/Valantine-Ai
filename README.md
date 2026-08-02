@@ -1,4 +1,5 @@
 # 💖 HeartFeel (a quiet space)
+![Downloads](https://img.shields.io/github/downloads/mohithsai/heartfeel/total)
 
 **HeartFeel** is not a chatbot.
 It’s a quiet space to feel, write, and reflect.
@@ -143,20 +144,13 @@ HeartFeel focuses on:
 
 ## 🔮 Roadmap
 
-### V1 (Current)
-
-* Emotion selection
-* Reflection system
-* Copy & Share
-* Clean UI
-
-### V2 (Planned)
-
-* Deeper, more human responses
-* Better context understanding
-* Improved emotional matching
-
-(Not adding more features — improving depth)
+### V4 (Current)
+- Splash screen + Native app feel
+- Journal — save every morning entry
+- Insights — weekly emotion patterns  
+- Daily streak tracking
+- Beautiful fade reveal response
+- Works fully offline
 
 ---
 
