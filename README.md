@@ -4,7 +4,7 @@
 ![Platform](https://img.shields.io/badge/platform-Windows-blue)
 ![PWA](https://img.shields.io/badge/PWA-ready-purple)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Made with](https://img.shields.io/badge/made%20with-HTML%20CSS%20JS-orange)
+![Downloads](https://img.shields.io/github/downloads/HeartFeel.HeartFeel/heartfeel/total)
 
 **HeartFeel** is not a chatbot.
 It’s a quiet space to feel, write, and reflect.
