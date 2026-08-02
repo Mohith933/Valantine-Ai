@@ -1,5 +1,5 @@
 # 💖 HeartFeel (a quiet space)
-![Downloads](https://img.shields.io/github/downloads/mohithsai/heartfeel/total)
+![Downloads][(https://partner.microsoft.com/en-us/dashboard/insights/analytics/store/acquisitions?productId=9N79GPDFJ3G7))
 
 **HeartFeel** is not a chatbot.
 It’s a quiet space to feel, write, and reflect.
