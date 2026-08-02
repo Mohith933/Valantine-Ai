@@ -1,5 +1,10 @@
 # 💖 HeartFeel (a quiet space)
-![Downloads][(https://partner.microsoft.com/en-us/dashboard/insights/analytics/store/acquisitions?productId=9N79GPDFJ3G7))
+
+![Version](https://img.shields.io/badge/version-4.0.0-crimson)
+![Platform](https://img.shields.io/badge/platform-Windows-blue)
+![PWA](https://img.shields.io/badge/PWA-ready-purple)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Made with](https://img.shields.io/badge/made%20with-HTML%20CSS%20JS-orange)
 
 **HeartFeel** is not a chatbot.
 It’s a quiet space to feel, write, and reflect.
